@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+    --brand-blue: #1e3a8a;
+    --brand-blue-2: #2563eb;
+    --brand-red: #ef4444;
+    --brand-red-2: #b91c1c;
+    --brand-ink: #0f172a;
+    --brand-mist: #f8fafc;
+}
+
+.app-body {
+    background: radial-gradient(1200px 800px at 10% -10%, #e2e8f0 0%, #f8fafc 40%, #ffffff 100%);
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app-body.has-bg {
+    background-image: var(--app-bg-overlay), var(--app-bg-url);
+    background-size: var(--app-bg-size, cover);
+    background-position: center;
+    background-attachment: fixed;
+}
+
+.theme-overlay-dark {
+    --app-bg-overlay: linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.65));
+    color: #f8fafc;
+}
+
+.theme-overlay-light {
+    --app-bg-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.70), rgba(248, 250, 252, 0.85));
+    color: #0f172a;
+}
+
+.app-shell {
+    gap: 0;
+}
+
+.app-sidebar {
+    background: linear-gradient(180deg, var(--brand-ink), #111827 50%, #0b1220 100%);
+    box-shadow: 2px 0 20px rgba(15, 23, 42, 0.35);
+}
+
+.app-sidebar .nav-link {
+    border-radius: 8px;
+    margin: 2px 0;
+    color: #e5e7eb;
+}
+
+.app-sidebar .nav-link:hover {
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.2), rgba(239, 68, 68, 0.2));
+    color: #fff;
+}
+
+.app-navbar {
+    background: linear-gradient(90deg, #ffffff 0%, #f1f5f9 60%, #fff1f2 100%);
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.card {
+    border-radius: 14px;
+    box-shadow: 0 6px 20px rgba(2, 6, 23, 0.06);
+    border: 1px solid #e2e8f0;
+}
+
+.btn-primary {
+    background: linear-gradient(90deg, var(--brand-blue-2), var(--brand-red));
+    border: none;
+}
+
+.btn-outline-primary {
+    border-color: var(--brand-blue-2);
+    color: var(--brand-blue-2);
+}
+
+.btn-outline-primary:hover {
+    background: var(--brand-blue-2);
+    color: #fff;
+}
+
+.table thead th {
+    background: #f1f5f9;
+}
