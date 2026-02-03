@@ -25,14 +25,13 @@ COPY . .
 RUN composer dump-autoload --optimize
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx.conf.template /etc/nginx/nginx.conf.template
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
 COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
-ENV PORT=8080
 EXPOSE 8080
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
