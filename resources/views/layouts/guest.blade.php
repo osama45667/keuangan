@@ -32,6 +32,7 @@
             .auth-card button { width: 100%; border: none; border-radius: 10px; padding: 12px; font-weight: 600; background: linear-gradient(90deg, #1d4ed8, #ef4444); color: white; cursor: pointer; }
             .auth-card a { color: #0ea5e9; text-decoration: none; }
             .auth-card a:hover { text-decoration: underline; }
+            .auth-card ul { list-style: none; padding-left: 0; margin: 8px 0 0; }
             .auth-footer { margin-top: 14px; font-size: 12px; color: rgba(226, 232, 240, 0.8); text-align: center; }
             @media (max-width: 900px) {
                 .auth-grid { grid-template-columns: 1fr; }
