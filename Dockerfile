@@ -1,3 +1,12 @@
+FROM node:20 AS assets
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY resources ./resources
+COPY public ./public
+COPY vite.config.* ./
+RUN npm run build
+
 FROM php:8.2-cli
 WORKDIR /var/www/html
 
@@ -20,6 +29,7 @@ COPY composer.json composer.lock ./
 RUN composer install --no-dev --prefer-dist --no-progress --no-scripts --optimize-autoloader
 
 COPY . .
+COPY --from=assets /app/public/build /var/www/html/public/build
 RUN composer dump-autoload --optimize
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
