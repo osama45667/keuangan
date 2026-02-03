@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\URL;
 use App\Models\Account;
 use App\Models\AccountingPeriod;
 use App\Models\Journal;
@@ -31,5 +32,8 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Account::class, AccountPolicy::class);
         Gate::policy(AccountingPeriod::class, PeriodPolicy::class);
         Gate::policy(Journal::class, JournalPolicy::class);
+        if (app()->environment('production')) {
+            URL::forceScheme('https');
+        }
     }
 }
