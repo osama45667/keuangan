@@ -1,12 +1,10 @@
-FROM php:8.2-fpm
+FROM php:8.2-cli
 WORKDIR /var/www/html
 
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         git \
         unzip \
-        nginx \
-        gettext-base \
         libpng-dev \
         libjpeg62-turbo-dev \
         libfreetype6-dev \
@@ -24,14 +22,8 @@ RUN composer install --no-dev --prefer-dist --no-progress --no-scripts --optimiz
 COPY . .
 RUN composer dump-autoload --optimize
 
-ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-COPY docker/nginx.conf.template /etc/nginx/nginx.conf.template
-
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-
-COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
 
 EXPOSE 8080
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+CMD ["sh", "-c", "php -S 0.0.0.0:${PORT:-8080} -t public"]
