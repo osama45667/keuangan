@@ -13,49 +13,53 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+        <style>
+            :root { color-scheme: light; }
+            body { margin: 0; font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #0f172a; }
+            .auth-shell { min-height: 100vh; display: grid; place-items: center; padding: 40px 20px; background: radial-gradient(900px 600px at 10% -10%, rgba(14, 165, 233, 0.25), transparent 60%), radial-gradient(800px 500px at 100% 20%, rgba(244, 63, 94, 0.25), transparent 55%), #0f172a; }
+            .auth-grid { width: min(980px, 100%); display: grid; gap: 28px; grid-template-columns: 1.2fr 1fr; align-items: stretch; }
+            .auth-panel { color: #e2e8f0; padding: 8px 8px 8px 16px; }
+            .auth-brand { display: flex; gap: 14px; align-items: center; }
+            .auth-logo { width: 44px; height: 44px; }
+            .auth-title { font-size: 20px; font-weight: 700; }
+            .auth-sub { margin-top: 12px; color: rgba(226, 232, 240, 0.8); line-height: 1.5; }
+            .auth-card { background: rgba(255, 255, 255, 0.98); border-radius: 18px; padding: 28px; box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35); border: 1px solid rgba(148, 163, 184, 0.35); }
+            .auth-card h1 { margin: 0; font-size: 22px; }
+            .auth-card p { margin: 6px 0 0; color: #64748b; }
+            .auth-card label { font-size: 14px; color: #475569; }
+            .auth-card input[type="email"], .auth-card input[type="password"], .auth-card input[type="text"] { width: 100%; padding: 10px 12px; border-radius: 10px; border: 1px solid #cbd5f5; outline: none; margin-top: 6px; font-size: 14px; }
+            .auth-card input:focus { border-color: #38bdf8; box-shadow: 0 0 0 3px rgba(56, 189, 248, 0.2); }
+            .auth-card button { width: 100%; border: none; border-radius: 10px; padding: 12px; font-weight: 600; background: linear-gradient(90deg, #1d4ed8, #ef4444); color: white; cursor: pointer; }
+            .auth-card a { color: #0ea5e9; text-decoration: none; }
+            .auth-card a:hover { text-decoration: underline; }
+            .auth-footer { margin-top: 14px; font-size: 12px; color: rgba(226, 232, 240, 0.8); text-align: center; }
+            @media (max-width: 900px) {
+                .auth-grid { grid-template-columns: 1fr; }
+                .auth-panel { display: none; }
+                .auth-card { padding: 22px; }
+            }
+        </style>
     </head>
-    <body class="font-sans text-gray-900 antialiased bg-slate-950">
-        <div class="relative min-h-screen overflow-hidden">
-            <div class="pointer-events-none absolute inset-0">
-                <div class="absolute -top-32 -left-32 h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl"></div>
-                <div class="absolute top-1/3 -right-32 h-80 w-80 rounded-full bg-rose-500/20 blur-3xl"></div>
-                <div class="absolute bottom-0 left-1/2 h-72 w-72 -translate-x-1/2 rounded-full bg-indigo-500/10 blur-3xl"></div>
-            </div>
-
-            <div class="relative z-10 mx-auto flex min-h-screen max-w-5xl items-center px-6 py-10">
-                <div class="grid w-full gap-8 lg:grid-cols-2">
-                    <div class="hidden flex-col justify-center lg:flex">
-                        <div class="inline-flex items-center gap-3 text-white">
-                            <x-application-logo class="h-12 w-12 fill-current text-white" />
-                            <div>
-                                <div class="text-sm uppercase tracking-widest text-cyan-200/80">Keuangan Pro</div>
-                                <div class="text-2xl font-semibold">Sistem Laporan Keuangan Profesional</div>
-                            </div>
-                        </div>
-                        <p class="mt-6 text-base leading-relaxed text-slate-200/80">
-                            Kelola pemasukan, pengeluaran, dan laporan keluarga dengan rapi, cepat, dan aman.
-                        </p>
-                        <div class="mt-8 flex items-center gap-4 text-slate-300/80">
-                            <span class="inline-flex h-2 w-2 rounded-full bg-emerald-400"></span>
-                            Akses dari desktop & mobile
+    <body>
+        <div class="auth-shell">
+            <div class="auth-grid">
+                <div class="auth-panel">
+                    <div class="auth-brand">
+                        <x-application-logo class="auth-logo fill-current text-white" />
+                        <div>
+                            <div class="auth-title">Keuangan Pro</div>
+                            <div class="auth-sub">Sistem Laporan Keuangan Profesional</div>
                         </div>
                     </div>
-
-                    <div class="w-full">
-                        <div class="rounded-2xl border border-white/10 bg-white/95 p-6 shadow-2xl backdrop-blur sm:p-8">
-                            <div class="mb-6 flex items-center gap-3 lg:hidden">
-                                <x-application-logo class="h-10 w-10 fill-current text-slate-900" />
-                                <div>
-                                    <div class="text-xs uppercase tracking-widest text-slate-500">Keuangan Pro</div>
-                                    <div class="text-lg font-semibold text-slate-900">Masuk ke Akun</div>
-                                </div>
-                            </div>
-                            {{ $slot }}
-                        </div>
-                        <p class="mt-4 text-center text-xs text-slate-300/80">
-                            Dengan masuk, Anda menyetujui kebijakan privasi dan keamanan data.
-                        </p>
+                    <p class="auth-sub">
+                        Kelola pemasukan, pengeluaran, dan laporan keluarga dengan rapi, cepat, dan aman.
+                    </p>
+                </div>
+                <div>
+                    <div class="auth-card">
+                        {{ $slot }}
                     </div>
+                    <div class="auth-footer">Dengan masuk, Anda menyetujui kebijakan privasi dan keamanan data.</div>
                 </div>
             </div>
         </div>
