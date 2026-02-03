@@ -6,6 +6,7 @@ RUN apt-get update \
         git \
         unzip \
         nginx \
+        gettext-base \
         libpng-dev \
         libjpeg62-turbo-dev \
         libfreetype6-dev \
@@ -24,10 +25,13 @@ COPY . .
 RUN composer dump-autoload --optimize
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-COPY docker/nginx.conf /etc/nginx/nginx.conf
+COPY docker/nginx.conf.template /etc/nginx/nginx.conf.template
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+COPY docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod +x /usr/local/bin/entrypoint.sh
+
 EXPOSE 80
 
-CMD ["sh", "-c", "php-fpm -D && nginx -g 'daemon off;'"]
+ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
