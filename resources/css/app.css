@@ -15,26 +15,21 @@
     background: radial-gradient(1200px 800px at 10% -10%, #e2e8f0 0%, #f8fafc 40%, #ffffff 100%);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
+    transition: background 0.6s ease-out;
 }
 
 .app-body.has-bg {
-    background-image: 
-        var(--app-bg-overlay, linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55))),
-        var(--app-bg-url);
-    background-size: auto, var(--app-bg-size, cover);
-    background-position: center, center;
-    background-attachment: fixed, fixed;
-    background-repeat: repeat, no-repeat;
     background-color: #0f172a;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 .theme-overlay-dark {
-    --app-bg-overlay: linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.65)) !important;
-    color: #f8fafc;
+    color: #0f172a;
 }
 
 .theme-overlay-light {
-    --app-bg-overlay: linear-gradient(180deg, rgba(255, 255, 255, 0.70), rgba(248, 250, 252, 0.85)) !important;
     color: #0f172a;
 }
 

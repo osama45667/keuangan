@@ -19,6 +19,11 @@ document.addEventListener('DOMContentLoaded', function() {
     const overlaySelect = document.getElementById('theme_overlay');
     const sizeSelect = document.getElementById('theme_bg_size');
     const themeRemove = document.getElementById('theme_remove');
+    
+    // Form handling
+    const profileForm = document.querySelector('form[action*="profile.update"]');
+    const saveBtn = document.querySelector('.save-btn');
+    const saveToast = document.getElementById('save-toast');
 
     if (!uploadCard) return;
 
@@ -52,13 +57,13 @@ document.addEventListener('DOMContentLoaded', function() {
         // Validate file
         const validTypes = ['image/jpeg', 'image/png', 'image/webp'];
         if (!validTypes.includes(file.type)) {
-            alert('Format file tidak didukung. Gunakan JPG, PNG, atau WebP');
+            showErrorToast('Format file tidak didukung. Gunakan JPG, PNG, atau WebP');
             fileInput.value = '';
             return;
         }
 
         if (file.size > 5 * 1024 * 1024) {
-            alert('Ukuran file terlalu besar. Maksimal 5MB');
+            showErrorToast('Ukuran file terlalu besar. Maksimal 5MB');
             fileInput.value = '';
             return;
         }
@@ -128,5 +133,73 @@ document.addEventListener('DOMContentLoaded', function() {
                 fileInput.value = '';
             }
         });
+    }
+    
+    // Form submission with animation
+    if (profileForm) {
+        profileForm.addEventListener('submit', function(e) {
+            if (saveBtn) {
+                // Disable button and show loading state
+                saveBtn.disabled = true;
+                const originalText = saveBtn.innerHTML;
+                saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span><span class="btn-text">Menyimpan...</span>';
+                
+                // Show success toast after a delay (form will submit)
+                setTimeout(() => {
+                    saveBtn.disabled = false;
+                    saveBtn.innerHTML = originalText;
+                }, 500);
+            }
+        });
+    }
+    
+    // Show success toast if there's a session status
+    if (document.body.innerHTML.includes("profile-updated")) {
+        setTimeout(() => {
+            if (saveToast) {
+                saveToast.style.display = 'block';
+                setTimeout(() => {
+                    saveToast.style.opacity = '1';
+                }, 10);
+                
+                // Hide after 4 seconds
+                setTimeout(() => {
+                    saveToast.style.opacity = '0';
+                    setTimeout(() => {
+                        saveToast.style.display = 'none';
+                    }, 400);
+                }, 4000);
+            }
+        }, 500);
+    }
+    
+    function showErrorToast(message) {
+        if (!saveToast) return;
+        
+        const errorToast = saveToast.cloneNode(true);
+        errorToast.innerHTML = `
+            <div class="toast-container">
+                <div class="toast-content bg-danger text-white px-4 py-3 rounded-3 shadow-lg d-flex align-items-center gap-3" style="min-width: 320px;">
+                    <div class="toast-icon" style="font-size: 1.5rem;">
+                        <i class="bi bi-exclamation-circle-fill"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold">Terjadi Kesalahan</div>
+                        <small class="toast-message">${message}</small>
+                    </div>
+                </div>
+            </div>
+        `;
+        
+        errorToast.style.display = 'block';
+        errorToast.style.opacity = '1';
+        saveToast.parentNode.insertBefore(errorToast, saveToast);
+        
+        setTimeout(() => {
+            errorToast.style.opacity = '0';
+            setTimeout(() => {
+                errorToast.remove();
+            }, 400);
+        }, 3500);
     }
 });

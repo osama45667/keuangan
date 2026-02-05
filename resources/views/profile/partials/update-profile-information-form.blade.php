@@ -140,15 +140,74 @@
             </div>
         </div>
 
-        <div class="d-flex align-items-center gap-3 mt-4">
-            <button class="btn btn-primary btn-lg" style="border-radius: 8px;">
-                <i class="bi bi-check-circle me-2"></i>{{ __('Save') }}
+        <div class="d-flex align-items-center gap-3 mt-4 mb-3">
+            <button class="btn btn-primary btn-lg save-btn" type="submit" style="border-radius: 8px; min-width: 150px;">
+                <i class="bi bi-check-circle me-2"></i><span class="btn-text">{{ __('Save') }}</span>
             </button>
-            @if (session('status') === 'profile-updated')
-                <span class="badge bg-success p-2">
-                    <i class="bi bi-check-circle me-1"></i>{{ __('Saved.') }}
-                </span>
-            @endif
+        </div>
+
+        <!-- Toast Notification -->
+        <div id="save-toast" class="position-fixed bottom-0 start-50 translate-middle-x mb-4" style="z-index: 9999; display: none; transform: translateX(-50%) translateY(100px); opacity: 0; transition: all 0.4s ease;">
+            <div class="toast-container">
+                <div class="toast-content bg-success text-white px-4 py-3 rounded-3 shadow-lg d-flex align-items-center gap-3" style="min-width: 320px;">
+                    <div class="toast-icon" style="font-size: 1.5rem;">
+                        <i class="bi bi-check-circle-fill"></i>
+                    </div>
+                    <div>
+                        <div class="fw-semibold">Tersimpan!</div>
+                        <small class="toast-message">Pengaturan profil Anda telah diperbarui</small>
+                    </div>
+                    <button type="button" class="btn-close btn-close-white ms-3" onclick="this.closest('.position-fixed').style.display='none'"></button>
+                </div>
+            </div>
         </div>
     </form>
 </section>
+
+<style>
+#save-toast {
+    animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.320, 1);
+}
+
+@keyframes slideUp {
+    0% {
+        transform: translateX(-50%) translateY(100px);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+    }
+}
+
+.save-btn {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.save-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+}
+
+.save-btn:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.save-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+.save-btn .spinner-border {
+    display: inline-block;
+    vertical-align: middle;
+    animation: spinner 0.8s linear infinite;
+}
+
+@keyframes spinner {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
