@@ -40,5 +40,46 @@
 </div>
 @stack('scripts')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Theme Background Script - Apply at runtime -->
+@php
+    $user = auth()->user();
+    $bgUrl = ($user && $user->theme_bg_path)
+        ? \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path)
+        : null;
+    $bgSize = $user?->theme_bg_size ?? 'cover';
+@endphp
+
+@if($bgUrl)
+<script>
+    // Apply background immediately using JavaScript
+    document.addEventListener('DOMContentLoaded', function() {
+        const body = document.body;
+        
+        // Set background properties
+        body.style.backgroundImage = "url('{{ $bgUrl }}')";
+        body.style.backgroundSize = '{{ $bgSize }}';
+        body.style.backgroundPosition = 'center';
+        body.style.backgroundAttachment = 'fixed';
+        body.style.backgroundRepeat = 'no-repeat';
+        body.style.backgroundColor = '#ffffff';
+        
+        // Ensure overlay is visible
+        body.classList.add('show-bg-overlay');
+        
+        console.log('✓ Theme background applied:', {
+            url: '{{ $bgUrl }}',
+            size: '{{ $bgSize }}'
+        });
+    });
+    
+    // Also apply on window load
+    window.addEventListener('load', function() {
+        const body = document.body;
+        body.style.backgroundImage = "url('{{ $bgUrl }}')";
+    });
+</script>
+@endif
+
 </body>
 </html>

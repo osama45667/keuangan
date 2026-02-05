@@ -21,6 +21,7 @@ html, body {
 .app-body {
     background: radial-gradient(1200px 800px at 10% -10%, #e2e8f0 0%, #f8fafc 40%, #ffffff 100%);
     background-size: cover;
+    background-attachment: fixed;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
     position: relative;
@@ -37,12 +38,16 @@ html, body {
     background: linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55));
     z-index: 2;
     opacity: 0;
-    transition: opacity 0.6s ease-out;
+    transition: opacity 0.3s ease-in-out;
     pointer-events: none;
 }
 
 .app-body.has-bg::before {
-    opacity: 1;
+    opacity: 1 !important;
+}
+
+.app-body.show-bg-overlay::before {
+    opacity: 1 !important;
 }
 
 .app-body.has-bg {
@@ -57,6 +62,10 @@ html, body {
 
 .app-body.theme-overlay-light::before {
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.70), rgba(248, 250, 252, 0.85)) !important;
+}
+
+.app-body.theme-overlay-auto::before {
+    background: linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55)) !important;
 }
 
 
@@ -77,6 +86,12 @@ html, body {
     min-height: 100vh;
     background: #f8fafc;
     z-index: 10;
+}
+
+.app-body.has-bg .app-main {
+    background: rgba(255, 255, 255, 0.85);
+    backdrop-filter: blur(15px);
+    border-radius: 0;
 }
 
 .app-body.has-bg .app-main {
