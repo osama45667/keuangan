@@ -16,7 +16,7 @@
     $bgSize = $user?->theme_bg_size ?? 'cover';
     $overlay = $user?->theme_overlay ?? 'auto';
 @endphp
-<body class="app-body @if($bgUrl)has-bg theme-overlay-{{ $overlay }}@endif" @if($bgUrl)style="background-image: url('{{ $bgUrl }}'); background-size: {{ $bgSize }}; background-position: center; background-attachment: fixed; background-repeat: no-repeat; background-color: #0f172a;"@endif>
+<body class="app-body @if($bgUrl)has-bg theme-overlay-{{ $overlay }}@endif"@if($bgUrl) style="background-image: url('{{ $bgUrl }}'); background-size: {{ $bgSize }}; background-position: center; background-attachment: fixed; background-repeat: no-repeat;"@endif>
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
     <div class="flex-grow-1">

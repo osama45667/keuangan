@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theme Background Debug</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('http://localhost/storage/themes/a4vFxXZxINVJZ6jW22g3Fx1ZoT8sB1ULU1gAf3Z4.png');
+            background-size: contain;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-color: #0f172a;
+            min-height: 100vh;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.70));
+            z-index: 5;
+            pointer-events: none;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 100;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .content-box {
+            background: rgba(255, 255, 255, 0.88);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 30px;
+            margin: 20px 0;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .status {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            border-radius: 4px;
+            margin: 15px 0;
+            color: #2e7d32;
+        }
+        
+        .navbar {
+            position: relative;
+            z-index: 101;
+            background: rgba(248, 250, 252, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 15px 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <h2>🎨 Theme Background Test</h2>
+    </div>
+    
+    <div class="container">
+        <div class="content-box">
+            <h1>✅ Static Background Test</h1>
+            <p>If you can see the street/urban background image behind this white box with a dark overlay, then the CSS approach works perfectly!</p>
+            
+            <div class="status">
+                <strong>Layer Stack:</strong><br>
+                • Layer -∞: Background image (fixed, contain)<br>
+                • Layer 5: Dark overlay gradient<br>
+                • Layer 100+: White semi-transparent content boxes<br>
+                • Layer 101: Navbar
+            </div>
+            
+            <h1>What This Test Shows:</h1>
+            <ul style="margin-left: 20px; margin-bottom: 20px;">
+                <li>✓ Background-image renders correctly</li>
+                <li>✓ Overlay gradient is visible</li>
+                <li>✓ Content is readable through transparency</li>
+                <li>✓ Fixed background keeps in place on scroll</li>
+            </ul>
+            
+            <h1>If Background NOT Visible:</h1>
+            <ul style="margin-left: 20px; margin-bottom: 20px;">
+                <li>Check browser DevTools (F12)</li>
+                <li>Look under Inspector → head/body</li>
+                <li>Verify background-image URL is correct</li>
+                <li>Check if CSS is being loaded and parsed</li>
+                <li>Try different browser (Chrome, Firefox, Edge)</li>
+                <li>Clear browser cache (Ctrl+Shift+Delete)</li>
+            </ul>
+        </div>
+        
+        <div class="content-box">
+            <h1>Production Implementation</h1>
+            <p>In the actual Keuangan app, this same approach applies:</p>
+            <p><strong>Step 1:</strong> User uploads image in Profile Settings<br>
+            <strong>Step 2:</strong> Image stored in storage/app/public/themes/<br>
+            <strong>Step 3:</strong> Path saved to users table<br>
+            <strong>Step 4:</strong> On page load, layout.app.blade.php checks user theme<br>
+            <strong>Step 5:</strong> Background-image style applied inline to body<br>
+            <strong>Step 6:</strong> Overlay gradient added via ::before pseudo-element<br>
+            <strong>Step 7:</strong> Content shows through semi-transparent background</p>
+        </div>
+        
+        <div class="content-box">
+            <h1>Troubleshooting Checklist</h1>
+            <p>☐ Theme image uploaded successfully<br>
+            ☐ Image URL accessible in browser<br>
+            ☐ Database has theme_bg_path value<br>
+            ☐ Body tag has 'has-bg' class<br>
+            ☐ Inline style has background-image<br>
+            ☐ CSS loaded without errors<br>
+            ☐ No conflicting CSS rules<br>
+            ☐ Browser cache cleared<br>
+            ☐ JavaScript not blocking styles</p>
+        </div>
+    </div>
+</body>
+</html>
