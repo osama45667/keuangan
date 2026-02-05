@@ -10,17 +10,24 @@
 </head>
 @php
     $user = auth()->user();
-    $bgUrl = $user && $user->theme_bg_path ? asset('storage/'.$user->theme_bg_path) : null;
+    $bgUrl = ($user && $user->theme_bg_path)
+        ? \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path)
+        : null;
     $overlay = $user?->theme_overlay ?? 'auto';
     $overlayClass = $overlay === 'light' ? 'theme-overlay-light' : 'theme-overlay-dark';
     $bgSize = $user?->theme_bg_size ?? 'cover';
+    $overlayCss = match ($overlay) {
+        'light' => 'linear-gradient(180deg, rgba(255,255,255,0.70), rgba(248,250,252,0.85))',
+        'dark' => 'linear-gradient(180deg, rgba(2,6,23,0.55), rgba(2,6,23,0.70))',
+        default => 'linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55))',
+    };
 @endphp
-<body class="app-body {{ $bgUrl ? 'has-bg '.$overlayClass : '' }}" @if($bgUrl) style="--app-bg-url: url('{{ $bgUrl }}'); --app-bg-size: {{ $bgSize }};" @endif>
+<body class="app-body {{ $bgUrl ? 'has-bg '.$overlayClass : '' }}" @if($bgUrl) style="--app-bg-url: url('{{ $bgUrl }}'); --app-bg-size: {{ $bgSize }}; --app-bg-overlay: {{ $overlayCss }};" @endif>
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
     <div class="flex-grow-1">
         @include('partials.navbar')
-        <main class="container-fluid p-4">
+        <main class="app-main container-fluid p-4">
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">

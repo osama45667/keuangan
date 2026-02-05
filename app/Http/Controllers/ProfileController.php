@@ -51,7 +51,20 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $response = Redirect::route('profile.edit')->with('status', 'profile-updated');
+
+        $cookieMinutes = 60 * 24 * 365;
+        if ($request->boolean('theme_remove') || !$request->user()->theme_bg_path) {
+            $response->withCookie(cookie()->forget('theme_bg_path'));
+            $response->withCookie(cookie()->forget('theme_bg_size'));
+            $response->withCookie(cookie()->forget('theme_overlay'));
+        } else {
+            $response->withCookie(cookie('theme_bg_path', $request->user()->theme_bg_path, $cookieMinutes));
+            $response->withCookie(cookie('theme_bg_size', $request->user()->theme_bg_size ?? 'cover', $cookieMinutes));
+            $response->withCookie(cookie('theme_overlay', $request->user()->theme_overlay ?? 'auto', $cookieMinutes));
+        }
+
+        return $response;
     }
 
     /**
