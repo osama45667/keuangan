@@ -178,3 +178,99 @@
         font-size: 0.95rem;
     }
 }
+
+/* Theme Settings Styling */
+.theme-settings-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    padding: 2rem;
+    border-radius: 1rem;
+    border-left: 4px solid #2563eb;
+}
+
+.upload-card {
+    transition: all 0.3s ease;
+}
+
+.upload-card:hover {
+    background: #f0f5ff !important;
+    border-color: #2563eb !important;
+}
+
+.upload-card.drag-over {
+    background: #e0e7ff !important;
+    border-color: #1e40af !important;
+}
+
+.form-select-lg,
+.form-control-lg {
+    padding: 0.75rem 1rem;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+}
+
+.theme-overlay-select,
+.theme-size-select {
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.theme-overlay-select:focus,
+.theme-size-select:focus {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
+}
+
+.form-check-lg .form-check-input {
+    width: 1.5rem;
+    height: 1.5rem;
+}
+
+.form-check-lg .form-check-label {
+    font-size: 1rem;
+    margin-left: 0.5rem;
+}
+
+.theme-preview-container {
+    box-shadow: inset 0 2px 8px rgba(2, 6, 23, 0.08);
+    transition: all 0.4s ease;
+}
+
+.btn-lg {
+    padding: 0.75rem 1.5rem !important;
+    font-weight: 500;
+}
+
+/* Mobile Responsive Adjustments */
+@media (max-width: 767.98px) {
+    .theme-settings-section {
+        padding: 1.5rem;
+    }
+
+    .upload-card {
+        padding: 2rem 1rem !important;
+    }
+
+    .form-select-lg,
+    .form-control-lg {
+        font-size: 0.95rem;
+    }
+
+    .btn-lg {
+        padding: 0.6rem 1.25rem !important;
+        font-size: 0.9rem;
+    }
+}
+
+/* Card Padding */
+.card {
+    padding: 1.5rem !important;
+}
+
+@media (max-width: 768px) {
+    .card {
+        padding: 1.25rem !important;
+    }
+}
+
+section {
+    display: block;
+}
