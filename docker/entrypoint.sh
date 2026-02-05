@@ -12,6 +12,10 @@ mkdir -p /var/www/html/storage/logs \
 touch /var/www/html/storage/logs/laravel.log
 chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
 
+if [ ! -e /var/www/html/public/storage ]; then
+    ln -s /var/www/html/storage/app/public /var/www/html/public/storage
+fi
+
 echo "Starting PHP server on 0.0.0.0:${PORT_VALUE}"
 
 exec php -S 0.0.0.0:${PORT_VALUE} -t public

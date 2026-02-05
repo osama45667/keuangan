@@ -14,12 +14,13 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends \
         git \
         unzip \
+        libpq-dev \
         libpng-dev \
         libjpeg62-turbo-dev \
         libfreetype6-dev \
         libzip-dev \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install -j$(nproc) gd pdo_mysql zip \
+    && docker-php-ext-install -j$(nproc) gd pdo_mysql pdo_pgsql zip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
