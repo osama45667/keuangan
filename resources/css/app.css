@@ -11,11 +11,18 @@
     --brand-mist: #f8fafc;
 }
 
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
 .app-body {
     background: radial-gradient(1200px 800px at 10% -10%, #e2e8f0 0%, #f8fafc 40%, #ffffff 100%);
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
-    transition: background 0.6s ease-out;
+    transition: background-filter 0.6s ease-out;
     position: relative;
 }
 
@@ -27,7 +34,7 @@
     right: 0;
     bottom: 0;
     background: linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55));
-    z-index: -1;
+    z-index: 5;
     opacity: 0;
     transition: opacity 0.6s ease-out;
     pointer-events: none;
@@ -38,7 +45,6 @@
 }
 
 .app-body.has-bg {
-    background-color: #0f172a;
     background-attachment: fixed;
     background-repeat: no-repeat;
     background-position: center;
@@ -52,33 +58,29 @@
     background: linear-gradient(180deg, rgba(255, 255, 255, 0.70), rgba(248, 250, 252, 0.85)) !important;
 }
 
-.theme-overlay-dark {
-    color: #0f172a;
-}
 
-.theme-overlay-light {
-    color: #0f172a;
-}
 
 .app-shell {
     gap: 0;
     position: relative;
-    z-index: 10;
+    z-index: 100;
+    flex: 1 1 auto;
 }
 
 .app-body.has-bg .app-shell {
-    background: rgba(15, 23, 42, 0.35);
-    backdrop-filter: blur(6px);
+    background: transparent;
 }
 
 .app-main {
     min-height: 100vh;
     background: #f8fafc;
+    z-index: 100;
 }
 
 .app-body.has-bg .app-main {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(8px);
+    box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.1);
 }
 
 .app-sidebar {
@@ -100,12 +102,15 @@
 .app-navbar {
     background: linear-gradient(90deg, #ffffff 0%, #f1f5f9 60%, #fff1f2 100%);
     border-bottom: 1px solid #e2e8f0;
+    position: relative;
+    z-index: 101;
 }
 
 .app-body.has-bg .app-navbar {
-    background: rgba(248, 250, 252, 0.92);
-    border-bottom-color: rgba(148, 163, 184, 0.35);
-    backdrop-filter: blur(6px);
+    background: rgba(248, 250, 252, 0.95);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .card {

@@ -138,18 +138,27 @@ document.addEventListener('DOMContentLoaded', function() {
     // Form submission with animation
     if (profileForm) {
         profileForm.addEventListener('submit', function(e) {
-            if (saveBtn) {
+            // Only prevent if there are no files and no theme_remove checked
+            const hasFile = fileInput && fileInput.files.length > 0;
+            const removeChecked = themeRemove && themeRemove.checked;
+            
+            if (saveBtn && (hasFile || removeChecked)) {
                 // Disable button and show loading state
                 saveBtn.disabled = true;
                 const originalText = saveBtn.innerHTML;
                 saveBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span><span class="btn-text">Menyimpan...</span>';
                 
-                // Show success toast after a delay (form will submit)
+                // Reset after form submit
                 setTimeout(() => {
-                    saveBtn.disabled = false;
-                    saveBtn.innerHTML = originalText;
-                }, 500);
+                    // Don't reset here - page will refresh after redirect
+                }, 100);
             }
+        });
+        
+        // Handle form submission with data validation
+        const formElement = profileForm;
+        formElement.addEventListener('submit', function(e) {
+            // Let the form submit naturally for full page refresh
         });
     }
     
