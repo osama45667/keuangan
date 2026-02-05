@@ -67,9 +67,13 @@ class FamilyReportController extends Controller
         $to = now()->endOfMonth()->toDateString();
 
         $driver = DB::getDriverName();
-        $ymExpr = $driver === 'sqlite'
-            ? "strftime('%Y-%m', tanggal)"
-            : "DATE_FORMAT(tanggal, '%Y-%m')";
+        if ($driver === 'sqlite') {
+            $ymExpr = "strftime('%Y-%m', tanggal)";
+        } elseif ($driver === 'pgsql') {
+            $ymExpr = "to_char(tanggal, 'YYYY-MM')";
+        } else {
+            $ymExpr = "DATE_FORMAT(tanggal, '%Y-%m')";
+        }
 
         $monthlyIncome = FamilyTransaction::select(
                 DB::raw("$ymExpr as ym"),
