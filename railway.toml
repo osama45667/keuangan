@@ -1,3 +1,6 @@
+## Railway configuration
+## Removed accidental shell commands that were mistakenly placed here.
+
 [build]
 builder = "DOCKERFILE"
 
