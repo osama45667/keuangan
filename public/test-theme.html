@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎨 Test Theme Background - Keuangan</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            width: 100%;
+            height: 100%;
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        /* Background image (z-index: implicit) */
+        body {
+            background-image: url('https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=800&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            position: relative;
+            z-index: 1;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Overlay gradient (z-index: 2) */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.70));
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        /* Header (z-index: 20) */
+        header {
+            background: rgba(248, 250, 252, 0.92);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 20px 30px;
+            position: relative;
+            z-index: 20;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+        }
+
+        header h1 {
+            color: #1e3a8a;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        header p {
+            color: #64748b;
+            font-size: 14px;
+        }
+
+        /* Main content (z-index: 10) */
+        main {
+            position: relative;
+            z-index: 10;
+            flex: 1;
+            padding: 40px 30px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .card {
+            background: rgba(255, 255, 255, 0.86);
+            backdrop-filter: blur(12px);
+            border-radius: 14px;
+            border: 1px solid rgba(148, 163, 184, 0.35);
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h2 {
+            color: #1e3a8a;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .card p {
+            color: #475569;
+            line-height: 1.6;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+
+        .card ul {
+            list-style: none;
+            padding: 0;
+            margin-top: 15px;
+        }
+
+        .card li {
+            padding: 8px 0;
+            color: #475569;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(226, 232, 240, 0.3);
+        }
+
+        .card li:last-child {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(90deg, #2563eb, #ef4444);
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .status-ok {
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        .status-warning {
+            color: #ca8a04;
+            font-weight: bold;
+        }
+
+        code {
+            background: rgba(2, 6, 23, 0.1);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Monaco', 'Courier New', monospace;
+            font-size: 12px;
+            color: #0f172a;
+        }
+
+        .layer-diagram {
+            background: #f1f5f9;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            font-family: monospace;
+            font-size: 12px;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.8;
+            color: #0f172a;
+        }
+
+        footer {
+            background: rgba(248, 250, 252, 0.92);
+            backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(226, 232, 240, 0.6);
+            padding: 20px 30px;
+            position: relative;
+            z-index: 20;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+        }
+
+        .test-result {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 10px 0;
+        }
+
+        .test-result.pass::before {
+            content: '✓';
+            color: #16a34a;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .test-result.fail::before {
+            content: '✗';
+            color: #dc2626;
+            font-weight: bold;
+            font-size: 16px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+        }
+
+        @media (max-width: 768px) {
+            .grid-2 {
+                grid-template-columns: 1fr;
+            }
+            header, main, footer {
+                padding-left: 20px;
+                padding-right: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>🎨 Theme Background Testing</h1>
+    <p>Verifikasi rendering background tema dengan overlay profesional</p>
+</header>
+
+<main>
+    <div class="container">
+        <!-- Test Status -->
+        <div class="card">
+            <h2>📊 Status Testing</h2>
+            <div class="grid-2">
+                <div>
+                    <h3 style="color: #475569; font-size: 14px; margin-bottom: 10px; font-weight: bold;">Background Image</h3>
+                    <div class="test-result pass">Background image loading dari URL</div>
+                    <div class="test-result pass">Ukuran cover, fixed attachment</div>
+                    <div class="test-result pass">Positioning center</div>
+                </div>
+                <div>
+                    <h3 style="color: #475569; font-size: 14px; margin-bottom: 10px; font-weight: bold;">Overlay Gradient</h3>
+                    <div class="test-result pass">Overlay gradient applied (z-index: 2)</div>
+                    <div class="test-result pass">Dark mode: rgba(2,6,23,0.70)</div>
+                    <div class="test-result pass">Opacity: 1 (fully visible)</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Z-Index Stack -->
+        <div class="card">
+            <h2>🏗️ CSS Layer Stack (Z-Index Hierarchy)</h2>
+            <div class="layer-diagram">Layer 1:   Body
+  └─ background-image: url(...)
+  └─ background-size: cover
+  └─ background-attachment: fixed
+
+Layer 2:   Body::before (Overlay)
+  └─ position: fixed (full viewport)
+  └─ background: linear-gradient(180deg, rgba(2,6,23,0.55), rgba(2,6,23,0.70))
+  └─ z-index: 2
+  └─ pointer-events: none
+
+Layer 10:  Main Content (.card, .container)
+  └─ background: rgba(255, 255, 255, 0.86)
+  └─ backdrop-filter: blur(12px)
+  └─ position: relative, z-index: 10
+  └─ border-radius: 14px
+
+Layer 20:  Header & Footer
+  └─ background: rgba(248, 250, 252, 0.92)
+  └─ backdrop-filter: blur(12px)
+  └─ z-index: 20
+            </div>
+        </div>
+
+        <!-- What You Should See -->
+        <div class="card">
+            <h2>👁️ Apa Yang Seharusnya Terlihat</h2>
+            <ul>
+                <li><span class="badge">✓</span> Background image terlihat di belakang kartu</li>
+                <li><span class="badge">✓</span> Overlay gelap di atas background (gradient fade)</li>
+                <li><span class="badge">✓</span> Content card dengan background semi-transparent putih</li>
+                <li><span class="badge">✓</span> Blur effect (glassmorphism) pada semua layer</li>
+                <li><span class="badge">✓</span> Text readable dengan kontras yang baik</li>
+                <li><span class="badge">✓</span> Header dan footer tetap visible di atas semua</li>
+            </ul>
+        </div>
+
+        <!-- Code Reference -->
+        <div class="card">
+            <h2>💻 HTML Structure Minimal</h2>
+            <p style="margin-bottom: 15px;">Struktur HTML yang digunakan:</p>
+            <div class="layer-diagram">&lt;html&gt;
+  &lt;head&gt;
+    &lt;style&gt;
+      body { background-image: url(...) }
+      body::before { z-index: 2; /* overlay */ }
+      .card { z-index: 10; background: rgba(...) }
+    &lt;/style&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;header z-index="20"&gt;...&lt;/header&gt;
+    &lt;main z-index="10"&gt;
+      &lt;div class="card"&gt;...&lt;/div&gt;
+    &lt;/main&gt;
+    &lt;footer z-index="20"&gt;...&lt;/footer&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+            </div>
+        </div>
+
+        <!-- Testing Checklist -->
+        <div class="card">
+            <h2>✅ Testing Checklist</h2>
+            <ul>
+                <li><strong>Visual Test:</strong> Apakah background image visible di belakang kartu?</li>
+                <li><strong>Overlay Test:</strong> Apakah ada gelap gradient di atas background?</li>
+                <li><strong>Blur Test:</strong> Apakah content card terlihat blur/frosted glass?</li>
+                <li><strong>Readability Test:</strong> Apakah text cukup readable dan tidak terlalu gelap?</li>
+                <li><strong>Responsive Test:</strong> Coba resize browser, background tetap fixed?</li>
+                <li><strong>Cache Test:</strong> Tekan Ctrl+F5 untuk hard refresh tanpa cache</li>
+            </ul>
+        </div>
+
+        <!-- Troubleshooting -->
+        <div class="card">
+            <h2>🔧 Jika Masih Ada Masalah</h2>
+            <p style="margin-bottom: 15px;">Langkah debugging:</p>
+            <ul>
+                <li><strong>1. Clear Cache:</strong> Ctrl+Shift+Delete → Cached images and files</li>
+                <li><strong>2. Hard Refresh:</strong> Ctrl+F5 untuk reload tanpa cache</li>
+                <li><strong>3. DevTools Inspect:</strong> F12 → Cek computed styles di body element</li>
+                <li><strong>4. Network Check:</strong> DevTools → Network tab → Cek status image (200 OK)</li>
+                <li><strong>5. Console Errors:</strong> Lihat Console tab untuk JS errors</li>
+                <li><strong>6. Try Different Browser:</strong> Test di Chrome, Firefox, Edge</li>
+            </ul>
+        </div>
+    </div>
+</main>
+
+<footer>
+    <p>🚀 Theme Background Testing Page | Generated February 5, 2026 | Keuangan Professional</p>
+</footer>
+
+</body>
+</html>
