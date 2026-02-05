@@ -18,6 +18,7 @@ class DashboardController extends Controller
         $from = now()->subMonths(11)->startOfMonth()->toDateString();
         $to = now()->endOfMonth()->toDateString();
 
+        // Use driver-specific date formatting for monthly grouping.
         $driver = DB::getDriverName();
         if ($driver === 'sqlite') {
             $ymExpr = "strftime('%Y-%m', tanggal)";
