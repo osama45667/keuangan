@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Background Image</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+        
+        .test-box {
+            min-height: 400px;
+            border: 3px solid #333;
+            margin: 20px 0;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+        }
+        
+        .test-1 {
+            background-image: linear-gradient(180deg, rgba(2,6,23,0.55), rgba(2,6,23,0.70)), 
+                              url('http://localhost/storage/themes/a4vFxXZxINVJZ6jW22g3Fx1ZoT8sB1ULU1gAf3Z4.png');
+            background-size: auto, contain;
+            background-position: center, center;
+            background-attachment: fixed, fixed;
+            background-repeat: repeat, no-repeat;
+        }
+        
+        .test-2 {
+            background-image: url('http://localhost/storage/themes/a4vFxXZxINVJZ6jW22g3Fx1ZoT8sB1ULU1gAf3Z4.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 Test Background Image Rendering</h1>
+    
+    <h2>Test 1: With Overlay Gradient + Fixed Attachment</h2>
+    <div class="test-box test-1">
+        Dengan overlay overlay dan background-attachment: fixed
+    </div>
+    
+    <h2>Test 2: Simple Background Image</h2>
+    <div class="test-box test-2">
+        Background image tanpa overlay
+    </div>
+    
+    <hr>
+    
+    <h2>Image URL: http://localhost/storage/themes/a4vFxXZxINVJZ6jW22g3Fx1ZoT8sB1ULU1gAf3Z4.png</h2>
+    
+    <p>Jika gambar muncul di salah satu test box, maka URL dan inline style berfungsi. Jika tidak ada yang muncul, periksa:</p>
+    <ul>
+        <li>URL gambar dapat diakses (buka di browser)</li>
+        <li>CORS issues</li>
+        <li>Server response</li>
+    </ul>
+</body>
+</html>

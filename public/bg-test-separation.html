@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Background Fix Test</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+        }
+        
+        .background-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('http://localhost/storage/themes/a4vFxXZxINVJZ6jW22g3Fx1ZoT8sB1ULU1gAf3Z4.png');
+            background-size: contain;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            z-index: -2;
+        }
+        
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(180deg, rgba(2,6,23,0.55), rgba(2,6,23,0.70));
+            z-index: -1;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            margin: 20px;
+            border-radius: 8px;
+            min-height: 500px;
+        }
+        
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        ul {
+            list-style-position: inside;
+            line-height: 1.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="background-container"></div>
+    <div class="overlay"></div>
+    
+    <div class="content">
+        <h1>✅ Background Rendering Test (Separation Method)</h1>
+        
+        <h2>Approach: Separate Fixed Background Container</h2>
+        <ul>
+            <li>Background image di fixed pseudo-element (z-index: -2)</li>
+            <li>Overlay di fixed pseudo-element (z-index: -1)</li>
+            <li>Content di z-index: 1 dengan semi-transparent background</li>
+        </ul>
+        
+        <h2>Keuntungan:</h2>
+        <ul>
+            <li>✓ Tidak ada issue dengan multiple backgrounds</li>
+            <li>✓ Overlay always on top of image</li>
+            <li>✓ Content tetap readable</li>
+            <li>✓ Better browser compatibility</li>
+        </ul>
+        
+        <h2>Jika Anda lihat gambar di background:</h2>
+        <ul>
+            <li>✓ Background-image URL bekerja</li>
+            <li>✓ Storage disk berfungsi</li>
+            <li>✓ Render engine OK</li>
+        </ul>
+        
+        <h2>QA Checklist:</h2>
+        <ul>
+            <li>☐ Background image terlihat di belakang content</li>
+            <li>☐ Overlay membuat gambar lebih gelap</li>
+            <li>☐ Gambar tidak bergerak saat scroll (fixed)</li>
+            <li>☐ Content tetap readable</li>
+        </ul>
+    </div>
+</body>
+</html>

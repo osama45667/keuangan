@@ -13,25 +13,9 @@
     $bgUrl = ($user && $user->theme_bg_path)
         ? \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path)
         : null;
-    $overlay = $user?->theme_overlay ?? 'auto';
     $bgSize = $user?->theme_bg_size ?? 'cover';
-    
-    // Generate overlay gradient
-    $overlayGradient = match ($overlay) {
-        'light' => 'linear-gradient(180deg, rgba(255,255,255,0.70), rgba(248,250,252,0.85))',
-        'dark' => 'linear-gradient(180deg, rgba(2,6,23,0.55), rgba(2,6,23,0.70))',
-        default => 'linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55))',
-    };
-    
-    // Build inline style for body
-    $bodyStyle = '';
-    if ($bgUrl) {
-        $bodyStyle = "background-image: $overlayGradient, url('$bgUrl'); background-size: auto, $bgSize; background-position: center, center; background-attachment: fixed, fixed; background-repeat: repeat, no-repeat;";
-    }
-    
-    $overlayClass = $overlay === 'light' ? 'theme-overlay-light' : 'theme-overlay-dark';
 @endphp
-<body class="app-body @if($bgUrl)has-bg {{ $overlayClass }}@endif" @if($bodyStyle)style="{{ $bodyStyle }}"@endif>
+<body class="app-body @if($bgUrl)has-bg @endif" @if($bgUrl)style="background-image: url('{{ $bgUrl }}'); background-size: {{ $bgSize }}; background-position: center; background-attachment: fixed; background-repeat: no-repeat;"@endif>
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
     <div class="flex-grow-1">
