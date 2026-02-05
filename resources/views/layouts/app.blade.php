@@ -52,32 +52,72 @@
 
 @if($bgUrl)
 <script>
-    // Apply background immediately using JavaScript
-    document.addEventListener('DOMContentLoaded', function() {
-        const body = document.body;
-        
-        // Set background properties
-        body.style.backgroundImage = "url('{{ $bgUrl }}')";
-        body.style.backgroundSize = '{{ $bgSize }}';
-        body.style.backgroundPosition = 'center';
-        body.style.backgroundAttachment = 'fixed';
-        body.style.backgroundRepeat = 'no-repeat';
-        body.style.backgroundColor = '#ffffff';
-        
-        // Ensure overlay is visible
-        body.classList.add('show-bg-overlay');
-        
-        console.log('✓ Theme background applied:', {
-            url: '{{ $bgUrl }}',
-            size: '{{ $bgSize }}'
-        });
-    });
-    
-    // Also apply on window load
-    window.addEventListener('load', function() {
-        const body = document.body;
-        body.style.backgroundImage = "url('{{ $bgUrl }}')";
-    });
+    // Robust background insertion: create fixed background + overlay DIVs
+    (function() {
+        function applyThemeBackground() {
+            try {
+                // prevent duplicate
+                if (document.getElementById('app-theme-bg')) return;
+
+                const bgUrl = '{{ $bgUrl }}';
+                const bgSize = '{{ $bgSize }}';
+
+                // background container
+                const bgDiv = document.createElement('div');
+                bgDiv.id = 'app-theme-bg';
+                bgDiv.style.position = 'fixed';
+                bgDiv.style.top = '0';
+                bgDiv.style.left = '0';
+                bgDiv.style.width = '100%';
+                bgDiv.style.height = '100%';
+                bgDiv.style.zIndex = '0';
+                bgDiv.style.pointerEvents = 'none';
+                bgDiv.style.backgroundImage = `url("${bgUrl}")`;
+                bgDiv.style.backgroundSize = bgSize;
+                bgDiv.style.backgroundPosition = 'center';
+                bgDiv.style.backgroundRepeat = 'no-repeat';
+                bgDiv.style.backgroundAttachment = 'fixed';
+                bgDiv.style.opacity = '1';
+
+                // overlay above bgDiv
+                const overlay = document.createElement('div');
+                overlay.id = 'app-theme-overlay';
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.zIndex = '1';
+                overlay.style.pointerEvents = 'none';
+                overlay.style.background = 'linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55))';
+                overlay.style.transition = 'opacity 0.35s ease-in-out';
+                overlay.style.opacity = '1';
+
+                // ensure content stacks above overlay
+                const shell = document.querySelector('.app-shell');
+                if (shell) shell.style.zIndex = '10';
+                const navbar = document.querySelector('.app-navbar');
+                if (navbar) navbar.style.zIndex = '20';
+                const sidebar = document.querySelector('.app-sidebar');
+                if (sidebar) sidebar.style.zIndex = '15';
+
+                // insert at document start so it's behind everything
+                document.documentElement.insertBefore(bgDiv, document.body);
+                document.documentElement.insertBefore(overlay, document.body);
+
+                console.log('✓ App theme background DIV inserted', { url: bgUrl, size: bgSize });
+            } catch (err) {
+                console.error('Error applying theme background', err);
+            }
+        }
+
+        if (document.readyState === 'complete' || document.readyState === 'interactive') {
+            applyThemeBackground();
+        } else {
+            document.addEventListener('DOMContentLoaded', applyThemeBackground);
+            window.addEventListener('load', applyThemeBackground);
+        }
+    })();
 </script>
 @endif
 
