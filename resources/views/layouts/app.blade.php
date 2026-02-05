@@ -22,7 +22,7 @@
         default => 'linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55))',
     };
 @endphp
-<body class="app-body {{ $bgUrl ? 'has-bg '.$overlayClass : '' }}" @if($bgUrl) style="--app-bg-url: url('{{ $bgUrl }}'); --app-bg-size: {{ $bgSize }}; --app-bg-overlay: {{ $overlayCss }};" @endif>
+<body class="app-body @if($bgUrl)has-bg {{ $overlayClass }}@endif" @if($bgUrl)style="--app-bg-url: url('{{ $bgUrl }}'); --app-bg-size: {{ $bgSize }}; --app-bg-overlay: {{ $overlayCss }};"@endif>
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
     <div class="flex-grow-1">
