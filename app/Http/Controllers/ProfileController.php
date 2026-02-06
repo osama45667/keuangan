@@ -51,7 +51,7 @@ class ProfileController extends Controller
 
         $request->user()->save();
 
-        $response = Redirect::route('profile.edit')->with('status', 'profile-updated');
+        $response = Redirect::route('profile.edit')->with('status', 'profile-updated')->with('bg_ts', time());
 
         $cookieMinutes = 60 * 24 * 365;
         if ($request->boolean('theme_remove') || !$request->user()->theme_bg_path) {

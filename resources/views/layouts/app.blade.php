@@ -16,6 +16,11 @@
     if ($user && $user->theme_bg_path) {
         // Use our dedicated endpoint instead of direct storage URL
         $bgUrl = route('api.user.background-image');
+        // Append timestamp set after save to bust cache when user updates background
+        $bgTs = session('bg_ts');
+        if ($bgTs) {
+            $bgUrl .= '?ts=' . $bgTs;
+        }
         $hasBg = true;
     }
     
