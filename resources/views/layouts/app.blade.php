@@ -14,7 +14,8 @@
     $hasBg = false;
     
     if ($user && $user->theme_bg_path) {
-        $bgUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path);
+        // Use our dedicated endpoint instead of direct storage URL
+        $bgUrl = route('api.user.background-image');
         $hasBg = true;
     }
     
@@ -27,30 +28,45 @@
         <script>
         function applyBackgroundImage() {
             var el = document.getElementById('theme-bg');
-            if (el) {
-                var url = el.getAttribute('data-bg-url') || '';
-                var size = el.getAttribute('data-bg-size') || 'cover';
-                if (url && url.trim()) {
-                    el.style.backgroundImage = 'url("' + url + '")';
-                    el.style.backgroundSize = size;
-                    console.log('[BG] Applied background: ' + url);
-                } else {
-                    console.warn('[BG] No URL found');
-                }
-            } else {
-                console.warn('[BG] Element not found');
+            if (!el) {
+                console.error('[BG] Element not found');
+                return;
             }
+            
+            var url = el.getAttribute('data-bg-url') || '';
+            var size = el.getAttribute('data-bg-size') || 'cover';
+            
+            if (!url || !url.trim()) {
+                console.error('[BG] No URL found in data attribute');
+                return;
+            }
+            
+            console.log('[BG] Applying background: ' + url + ' | Size: ' + size);
+            
+            // Use a new Image to preload and check if URL is valid
+            var img = new Image();
+            img.onload = function() {
+                console.log('[BG] Image loaded successfully, applying to background');
+                el.style.backgroundImage = 'url("' + url + '")';
+                el.style.backgroundSize = size;
+            };
+            img.onerror = function() {
+                console.error('[BG] Failed to load image from: ' + url);
+                // Still apply it anyway - browser might have cached it
+                el.style.backgroundImage = 'url("' + url + '")';
+                el.style.backgroundSize = size;
+            };
+            img.src = url;
         }
         
         // Apply immediately
-        applyBackgroundImage();
-        
-        // Also apply after DOM ready as fallback
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', applyBackgroundImage);
+        } else {
+            applyBackgroundImage();
         }
         
-        // Apply after a small delay to ensure rendering
+        // Also apply after a small delay
         setTimeout(applyBackgroundImage, 100);
         </script>
     @endif

@@ -16,6 +16,31 @@ Route::get('/', function () {
 });
 
 Route::middleware(['auth'])->group(function () {
+    // Background image endpoint
+    Route::get('/api/user/background-image', function() {
+        $user = auth()->user();
+        if (!$user || !$user->theme_bg_path) {
+            return response()->noContent();
+        }
+        
+        try {
+            $path = $user->theme_bg_path;
+            if (!\Illuminate\Support\Facades\Storage::disk('public')->exists($path)) {
+                return response()->noContent();
+            }
+            
+            $file = \Illuminate\Support\Facades\Storage::disk('public')->get($path);
+            $mime = \Illuminate\Support\Facades\Storage::disk('public')->mimeType($path);
+            
+            return response($file)
+                ->header('Content-Type', $mime)
+                ->header('Cache-Control', 'public, max-age=31536000')
+                ->header('ETag', hash('md5', $file));
+        } catch (\Exception $e) {
+            return response()->noContent();
+        }
+    })->name('api.user.background-image');
+
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
