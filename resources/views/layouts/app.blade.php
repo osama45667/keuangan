@@ -25,18 +25,7 @@
 @endphp
 <body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif">
     @if($hasBg)
-        <div id="theme-bg" data-theme-size="{{ $bgSize }}" data-theme-overlay="{{ $overlay }}" style="position:fixed; top:0; left:0; right:0; bottom:0; z-index:0; background-size:{{ $bgSize }}; background-position:center center; background-repeat:no-repeat; background-attachment:fixed; background-image:url('{{ $bgUrl }}'); pointer-events:none;"></div>
-        <script>
-            (function(){
-                var el = document.getElementById('theme-bg');
-                if (el) {
-                    var overlay = el.getAttribute('data-theme-overlay');
-                    if (overlay && overlay !== 'auto') {
-                        document.body.classList.add('theme-overlay-' + overlay);
-                    }
-                }
-            })();
-        </script>
+        <div id="theme-bg" style="position:fixed; top:0; left:0; right:0; bottom:0; z-index:0; background-image:url('{{ $bgUrl }}'); background-size:{{ $bgSize }}; background-position:center center; background-repeat:no-repeat; background-attachment:fixed; pointer-events:none;"></div>
     @endif
 
 <div class="d-flex app-shell" style="min-height:100vh;">
