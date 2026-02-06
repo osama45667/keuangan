@@ -32,8 +32,11 @@ html, body {
     background-attachment: fixed;
 }
 
-/* WHEN THEME EXISTS: Inline style handles background-image, we just add overlay and transparency */
-/* (No background rules here - let inline style work!) */
+/* CRITICAL: When has-bg exists AND has inline style - ensure inline style wins */
+.app-body.has-bg[style*="background-image"] {
+    background: none;
+    /* Let inline background-image property work! */
+}
 
 /* When has-bg: just add overlay, DON'T touch background (let inline style work!) */
 .app-body.has-bg::before {
@@ -66,7 +69,7 @@ html, body {
     position: relative;
     z-index: 2;
     flex: 1 1 auto;
-    background: transparent;
+    background: transparent !important;
 }
 
 .app-main {
@@ -77,7 +80,7 @@ html, body {
 
 /* When theme with background: make content MORE transparent so background shows clearly */
 .app-body.has-bg .app-main {
-    background: rgba(255, 255, 255, 0.65) !important;
+    background: rgba(255, 255, 255, 0.60) !important;
     backdrop-filter: blur(8px);
     box-shadow: none;
 }
