@@ -19,23 +19,23 @@ html, body {
 }
 
 .app-body {
-    background: radial-gradient(1200px 800px at 10% -10%, #e2e8f0 0%, #f8fafc 40%, #ffffff 100%);
-    background-size: cover;
-    background-attachment: fixed;
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
     position: relative;
     z-index: 0;
 }
 
-/* CRITICAL: When has-bg class exists, clear gradient ONLY - inline styles will show through */
-.app-body.has-bg {
-    /* Just clear the gradient, don't touch inline style properties */
-    background-image: none !important;
-    background-color: transparent !important;
+/* DEFAULT: When NO theme - show gradient background */
+.app-body:not(.has-bg) {
+    background: radial-gradient(1200px 800px at 10% -10%, #e2e8f0 0%, #f8fafc 40%, #ffffff 100%);
+    background-size: cover;
+    background-attachment: fixed;
 }
 
-/* Overlay gradient - MUST show when has-bg exists */
+/* WHEN THEME EXISTS: Inline style handles background-image, we just add overlay and transparency */
+/* (No background rules here - let inline style work!) */
+
+/* When has-bg: just add overlay, DON'T touch background (let inline style work!) */
 .app-body.has-bg::before {
     content: '';
     position: fixed;
@@ -75,11 +75,10 @@ html, body {
     z-index: 2;
 }
 
-/* When background-image exists, make main FULLY transparent to show background */
+/* When theme with background: make content MORE transparent so background shows clearly */
 .app-body.has-bg .app-main {
-    background: rgba(255, 255, 255, 0.75) !important;
-    backdrop-filter: blur(10px);
-    border-radius: 0;
+    background: rgba(255, 255, 255, 0.65) !important;
+    backdrop-filter: blur(8px);
     box-shadow: none;
 }
 
