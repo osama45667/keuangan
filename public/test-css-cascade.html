@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Background Rendering</title>
+    <style>
+        * { margin: 0; padding: 0; }
+        
+        /* Test 1: Simple background with gradient */
+        .test1 {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 50%, #f0f9ff 100%);
+            background-size: 200% 200%;
+            margin-bottom: 20px;
+        }
+        
+        /* Test 2: With class modifier */
+        .test2 {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 50%, #f0f9ff 100%);
+            background-size: 200% 200%;
+            margin-bottom: 20px;
+        }
+        
+        .test2.has-bg {
+            animation: none !important;
+        }
+        
+        /* Test 3: Inline style override */
+        .test3 {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 50%, #f0f9ff 100%);
+            background-size: 200% 200%;
+        }
+    </style>
+</head>
+<body style="font-family: Arial; padding: 20px; background: #f5f5f5;">
+    <h1>Background Rendering Test Cases</h1>
+    
+    <h2>Test 1: Default Gradient (no background-image)</h2>
+    <div class="test1"></div>
+    <p>Expected: Light gradient background</p>
+    
+    <h2>Test 2: With .has-bg class (simulates app.blade.php)</h2>
+    <div class="test2 has-bg"></div>
+    <p>Expected: SAME as Test 1 (class only disables animation)</p>
+    
+    <h2>Test 3: Inline background-image (simulates with theme)</h2>
+    <div class="test3" style="background: none; background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 4 3%22><rect fill=%224a90e2%22 width=%224%22 height=%223%22/></svg>'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; background-color: transparent;"></div>
+    <p>Expected: BLUE background (shows inline style works)</p>
+    
+    <h2>Test 4: With .has-bg class + inline style</h2>
+    <div class="test3 has-bg" style="background: none; background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 4 3%22><rect fill=%2210b981%22 width=%224%22 height=%223%22/></svg>'); background-size: cover; background-position: center; background-attachment: fixed; background-repeat: no-repeat; background-color: transparent;"></div>
+    <p>Expected: GREEN background (simulates production scenario)</p>
+    
+    <hr>
+    
+    <h2>CSS Cascade Test</h2>
+    <p>If Tests 3 & 4 show colored backgrounds → CSS specificity is correct ✓</p>
+    <p>If they show gradient → Inline style not working (cascade issue) ✗</p>
+
+</body>
+</html>
