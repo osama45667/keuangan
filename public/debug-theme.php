@@ -25,16 +25,13 @@ try {
     
     // Bootstrap Laravel app
     $app = require __DIR__ . '/../bootstrap/app.php';
-    $kernel = $app->make(\Illuminate\Contracts\Http\Kernel::class);
     
-    // Create a simple request
-    $request = \Illuminate\Http\Request::capture();
-    
-    // Get user from database directly
-    $user = \App\Models\User::find(auth()->id() ?? 1);
+    // Get first user from database (simplest approach)
+    /** @var \App\Models\User|null $user */
+    $user = \App\Models\User::first();
     
     if (!$user) {
-        echo '<p class="error">❌ Could not load user. Make sure you are logged in.</p>';
+        echo '<p class="error">❌ No users found in database. Please create an account first.</p>';
         exit;
     }
     
@@ -56,20 +53,22 @@ try {
         echo '<pre>';
         
         // Check if file exists in storage
-        $disk = \Illuminate\Support\Facades\Storage::disk('public');
-        $exists = $disk->exists($user->theme_bg_path);
+        $storage = \Illuminate\Support\Facades\Storage::disk('public');
+        $exists = $storage->exists($user->theme_bg_path);
         
         echo "File path in storage: " . htmlspecialchars($user->theme_bg_path) . "\n";
         echo "Exists in storage: " . ($exists ? '<span class="success">✓ YES</span>' : '<span class="error">✗ NO</span>') . "\n";
         
-        // Generate URL
-        $url = $disk->url($user->theme_bg_path);
+        // Generate URL using Storage facade
+        // @phpstan-ignore-next-line
+        $url = $storage->url($user->theme_bg_path);
         echo "Generated URL: " . htmlspecialchars($url) . "\n";
         
         // Try to get file info
         if ($exists) {
-            $size = $disk->size($user->theme_bg_path);
-            echo "File size: " . ($size / 1024) . " KB\n";
+            $size = $storage->size($user->theme_bg_path);
+            $sizeKB = round($size / 1024, 2);
+            echo "File size: " . $sizeKB . " KB\n";
         }
         
         echo "</pre>";
