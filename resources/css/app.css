@@ -157,11 +157,42 @@ html, body {
 .app-main { z-index: 10; position: relative; }
 
 /* Professional layout tweaks */
-.app-main .profile-section { max-width: 980px; margin: 0 auto; padding: 24px; }
-.theme-settings { margin-top: 18px; }
-.upload-card { padding: 36px 20px; }
+.app-main .profile-section {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 24px;
+    position: relative;
+    z-index: 20;
+    background: rgba(255,255,255,0.98);
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(2,6,23,0.06);
+    overflow: visible;
+}
+.theme-settings { margin-top: 18px; position: relative; z-index: 20; }
+.upload-card { padding: 36px 20px; position: relative; z-index: 20; background: transparent; }
 .action-buttons { justify-content: flex-start; }
-.save-btn { box-shadow: 0 8px 24px rgba(59,130,246,0.18); }
+.save-btn { box-shadow: 0 8px 24px rgba(59,130,246,0.18); position: relative; z-index: 21; }
+.delete-btn { position: relative; z-index: 21; }
+
+/* Ensure panels and interactive controls render above overlay and are not clipped */
+.app-main .card,
+.app-main .profile-section,
+.app-main .upload-card,
+.app-main .modal,
+.app-main .dropdown-menu {
+    position: relative;
+    z-index: 20;
+    overflow: visible;
+    background-clip: padding-box;
+}
+
+.form-control { background-clip: padding-box; }
+
+/* Allow shadows and tooltips to show */
+.app-shell, .app-main, .app-sidebar { overflow: visible; }
+
+/* Make sure sticky / fixed footer buttons inside panels remain visible */
+.app-main .panel-footer { position: sticky; bottom: 0; z-index: 22; background: transparent; padding-top: 12px; }
 
 /* ============================================================================ */
 /* SHELL & MAIN CONTAINERS */
