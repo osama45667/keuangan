@@ -129,6 +129,7 @@ html, body {
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     background-color: transparent;
+    z-index: -10 !important;
 }
 
 /* Subtle overlay above background, below content */
@@ -143,15 +144,17 @@ html, body {
 
 .app-body.has-bg.theme-overlay-dark::before {
     background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.50));
+    z-index: 1;
 }
 
 .app-body.has-bg.theme-overlay-light::before {
-    background: linear-gradient(180deg, rgba(255,255,255,0.40), rgba(248,250,252,0.60));
+    background: linear-gradient(180deg, rgba(255,255,255,0.30), rgba(248,250,252,0.50));
+    z-index: 1;
 }
 
 /* Ensure content floats above background */
-.app-shell { z-index: 2; position: relative; }
-.app-main { z-index: 3; position: relative; }
+.app-shell { z-index: 10; position: relative; }
+.app-main { z-index: 10; position: relative; }
 
 /* Professional layout tweaks */
 .app-main .profile-section { max-width: 980px; margin: 0 auto; padding: 24px; }
@@ -177,13 +180,13 @@ html, body {
     flex: 1;
     min-height: calc(100vh - 80px);
     background: transparent;
-    z-index: 2;
+    z-index: 10;
     animation: fadeInUp 0.6s ease-out;
 }
 
 .app-body.has-bg .app-main {
-    background: rgba(255, 255, 255, 0.70) !important;
-    backdrop-filter: blur(8px);
+    background: rgba(255, 255, 255, 0.50) !important;
+    backdrop-filter: blur(4px);
 }
 
 /* ============================================================================ */
@@ -194,7 +197,7 @@ html, body {
     background: linear-gradient(180deg, var(--brand-ink) 0%, #111827 50%, #0b1220 100%);
     box-shadow: 2px 0 20px rgba(15, 23, 42, 0.35);
     position: relative;
-    z-index: 15;
+    z-index: 12;
     width: 240px;
     animation: slideInLeft 0.6s ease-out;
     overflow-y: auto;

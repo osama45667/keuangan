@@ -23,19 +23,35 @@
 @endphp
 <body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif">
     @if($hasBg)
-        <div id="theme-bg" data-bg-url="{!! $bgUrl !!}" data-bg-size="{{ $bgSize }}" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; background-position:center; background-repeat:no-repeat; background-attachment:fixed; background-size:cover; pointer-events:none;"></div>
+        <div id="theme-bg" data-bg-url="{!! $bgUrl !!}" data-bg-size="{{ $bgSize }}" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1; background-color:#f5f5f5; background-position:center; background-repeat:no-repeat; background-attachment:fixed; background-size:cover; pointer-events:none;"></div>
         <script>
-        (function() {
+        function applyBackgroundImage() {
             var el = document.getElementById('theme-bg');
             if (el) {
-                var url = el.getAttribute('data-bg-url');
+                var url = el.getAttribute('data-bg-url') || '';
                 var size = el.getAttribute('data-bg-size') || 'cover';
-                if (url) {
-                    el.style.backgroundImage = 'url(' + url + ')';
+                if (url && url.trim()) {
+                    el.style.backgroundImage = 'url("' + url + '")';
                     el.style.backgroundSize = size;
+                    console.log('[BG] Applied background: ' + url);
+                } else {
+                    console.warn('[BG] No URL found');
                 }
+            } else {
+                console.warn('[BG] Element not found');
             }
-        })();
+        }
+        
+        // Apply immediately
+        applyBackgroundImage();
+        
+        // Also apply after DOM ready as fallback
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', applyBackgroundImage);
+        }
+        
+        // Apply after a small delay to ensure rendering
+        setTimeout(applyBackgroundImage, 100);
         </script>
     @endif
 
