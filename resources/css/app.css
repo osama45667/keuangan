@@ -18,27 +18,28 @@ html, body {
     padding: 0;
 }
 
+/* BASE: Default without theme */
 .app-body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
     position: relative;
     z-index: 0;
+    background: #f8fafc;
 }
 
-/* DEFAULT: When NO theme - show gradient background */
 .app-body:not(.has-bg) {
-    background: radial-gradient(1200px 800px at 10% -10%, #e2e8f0 0%, #f8fafc 40%, #ffffff 100%);
-    background-size: cover;
-    background-attachment: fixed;
+    background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%);
 }
 
-/* CRITICAL: When has-bg exists AND has inline style - ensure inline style wins */
-.app-body.has-bg[style*="background-image"] {
-    background: none;
-    /* Let inline background-image property work! */
+/* CRITICAL: When theme exists - use inline background-image ONLY */
+.app-body.has-bg {
+    background-color: transparent !important;
+    background: transparent !important;
 }
 
-/* When has-bg: just add overlay, DON'T touch background (let inline style work!) */
+/* Overlay on top of background image */
 .app-body.has-bg::before {
     content: '';
     position: fixed;
@@ -48,8 +49,15 @@ html, body {
     bottom: 0;
     background: linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55));
     z-index: 1;
-    opacity: 1;
     pointer-events: none;
+}
+
+.app-body.has-bg.theme-overlay-dark::before {
+    background: linear-gradient(180deg, rgba(2,6,23,0.60), rgba(2,6,23,0.75));
+}
+
+.app-body.has-bg.theme-overlay-light::before {
+    background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(248,250,252,0.80));
 }
 
 /* Dark overlay mode */
@@ -65,24 +73,25 @@ html, body {
 
 
 .app-shell {
+    display: flex;
     gap: 0;
     position: relative;
     z-index: 2;
-    flex: 1 1 auto;
+    flex: 1;
     background: transparent !important;
 }
 
 .app-main {
-    min-height: 100vh;
-    background: #f8fafc;
+    flex: 1;
+    min-height: calc(100vh - 80px);
+    background: transparent;
     z-index: 2;
 }
 
-/* When theme with background: make content MORE transparent so background shows clearly */
+/* When theme active - add semi-transparent white overlay for content readability */
 .app-body.has-bg .app-main {
-    background: rgba(255, 255, 255, 0.60) !important;
-    backdrop-filter: blur(8px);
-    box-shadow: none;
+    background: rgba(255, 255, 255, 0.55) !important;
+    backdrop-filter: blur(12px);
 }
 
 .app-sidebar {
