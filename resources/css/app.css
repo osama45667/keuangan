@@ -128,7 +128,9 @@ html, body {
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
-    background-color: transparent;
+    /* Fallback color when image doesn't cover (contain mode) - use app blue tint */
+    background-color: var(--brand-blue-lighter);
+    background-blend-mode: normal;
     z-index: -10 !important;
 }
 
