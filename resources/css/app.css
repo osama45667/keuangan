@@ -263,10 +263,13 @@ html, body {
     background: linear-gradient(90deg, #ffffff 0%, #f1f5f9 60%, #fff1f2 100%);
     border-bottom: 1px solid #e2e8f0;
     position: relative;
-    z-index: 20;
+    z-index: 100;
     animation: slideInRight 0.6s ease-out;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
     transition: all var(--transition-smooth);
+    min-height: 60px;
+    display: flex;
+    align-items: center;
 }
 
 .app-body.has-bg .app-navbar {
@@ -283,6 +286,18 @@ html, body {
 .app-navbar .nav-link:hover {
     color: var(--brand-blue-light) !important;
     transform: translateY(-2px);
+}
+
+/* Hamburger menu button styling */
+.app-navbar .btn-outline-secondary {
+    border-color: var(--brand-blue) !important;
+    color: var(--brand-blue) !important;
+    z-index: 105;
+}
+
+.app-navbar .btn-outline-secondary:hover {
+    background-color: var(--brand-blue) !important;
+    color: white !important;
 }
 
 /* ============================================================================ */
@@ -417,20 +432,68 @@ html, body {
 }
 
 /* ============================================================================ */
-/* RESPONSIVE DESIGN */
+/* ============================================================================ */
+/* RESPONSIVE DESIGN - MOBILE FIRST */
 /* ============================================================================ */
 
-@media (max-width: 768px) {
-    .app-sidebar {
-        width: 200px;
-    }
-    
-    .app-body {
+/* Mobile devices (< 768px) */
+@media (max-width: 767px) {
+    /* Stack layout vertically on mobile */
+    .app-shell {
         flex-direction: column;
     }
     
+    /* Sidebar takes full height on mobile when open */
+    .app-sidebar {
+        width: 100% !important;
+    }
+    
+    /* Small font for mobile */
+    .app-body {
+        font-size: 0.9rem;
+    }
+    
+    /* Reduce padding on mobile */
+    .app-main {
+        padding: 12px !important;
+        min-height: calc(100vh - 60px);
+    }
+    
+    .app-main .profile-section {
+        padding: 16px !important;
+    }
+    
+    /* Make cards full-width on mobile */
     .card {
-        margin-bottom: 12px;
+        margin-bottom: 12px !important;
+        width: 100%;
+    }
+    
+    /* Offcanvas proper styling */
+    .offcanvas {
+        z-index: 1050 !important;
+        background: linear-gradient(180deg, var(--brand-ink) 0%, #111827 100%) !important;
+    }
+    
+    /* Offcanvas backdrop */
+    .offcanvas-backdrop {
+        z-index: 1040 !important;
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+    
+    /* Make sure content is clickable when offcanvas isn't open */
+    .offcanvas:not(.show) ~ .app-shell {
+        pointer-events: auto;
+    }
+    
+    /* Reduce heading sizes on mobile */
+    h1, h2, h3, h4, h5, h6 {
+        font-size: 0.95em;
+    }
+    
+    /* Make buttons full width on mobile when needed */
+    .btn-block, .btn-full {
+        width: 100%;
     }
 }
 
