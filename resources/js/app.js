@@ -74,6 +74,17 @@ document.addEventListener('DOMContentLoaded', function() {
             if (fileName) fileName.textContent = `📁 ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
             if (uploadContent) uploadContent.style.display = 'none';
             if (previewContainer) previewContainer.style.display = 'block';
+            // Apply preview immediately to page background so user sees change before saving
+            try {
+                var themeBgEl = document.getElementById('theme-bg');
+                if (themeBgEl) {
+                    themeBgEl.style.backgroundImage = 'url("' + e.target.result + '")';
+                    var selectedSize = (sizeSelect && sizeSelect.value) ? sizeSelect.value : 'cover';
+                    themeBgEl.style.backgroundSize = selectedSize;
+                }
+            } catch (err) {
+                // ignore preview application errors
+            }
         };
         reader.readAsDataURL(file);
     }

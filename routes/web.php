@@ -34,8 +34,10 @@ Route::middleware(['auth'])->group(function () {
             
             return response($file)
                 ->header('Content-Type', $mime)
-                ->header('Cache-Control', 'public, max-age=31536000')
-                ->header('ETag', hash('md5', $file));
+                // Prevent aggressive caching so new uploads appear immediately
+                ->header('Cache-Control', 'no-cache, no-store, must-revalidate, max-age=0')
+                ->header('Pragma', 'no-cache')
+                ->header('Expires', '0');
         } catch (\Exception $e) {
             return response()->noContent();
         }
