@@ -2,13 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 :root {
-    --brand-blue: #1e3a8a;
-    --brand-blue-2: #2563eb;
+    --brand-blue: #1e40af;
+    --brand-blue-light: #3b82f6;
+    --brand-blue-lighter: #dbeafe;
+    --brand-purple: #7c3aed;
     --brand-red: #ef4444;
-    --brand-red-2: #b91c1c;
+    --brand-red-dark: #991b1b;
     --brand-ink: #0f172a;
     --brand-mist: #f8fafc;
+    --brand-gray: #6b7280;
+    --transition-fast: 0.2s ease-out;
+    --transition-smooth: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
 html, body {
@@ -16,30 +27,104 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
-/* BASE: Default without theme */
+/* ============================================================================ */
+/* ANIMATION DEFINITIONS */
+/* ============================================================================ */
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes shimmer {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* ============================================================================ */
+/* BASE BODY & LAYOUT */
+/* ============================================================================ */
+
 .app-body {
-    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     position: relative;
     z-index: 0;
-    background: #f8fafc;
+    background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 50%, #f0f9ff 100%);
+    background-size: 200% 200%;
+    animation: gradientShift 15s ease infinite;
+    transition: background 0.6s ease;
 }
 
-.app-body:not(.has-bg) {
-    background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 100%);
-}
-
-/* CRITICAL: When theme exists - use inline background-image ONLY */
+/* When theme uploaded - accept background-image from inline style */
 .app-body.has-bg {
-    background-color: transparent !important;
-    background: transparent !important;
+    background: none !important;
 }
 
-/* Overlay on top of background image */
+/* ============================================================================ */
+/* BACKGROUND OVERLAY LAYER */
+/* ============================================================================ */
+
 .app-body.has-bg::before {
     content: '';
     position: fixed;
@@ -50,6 +135,7 @@ html, body {
     background: linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55));
     z-index: 1;
     pointer-events: none;
+    animation: fadeIn 0.8s ease-out;
 }
 
 .app-body.has-bg.theme-overlay-dark::before {
@@ -57,20 +143,12 @@ html, body {
 }
 
 .app-body.has-bg.theme-overlay-light::before {
-    background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(248,250,252,0.80));
+    background: linear-gradient(180deg, rgba(255,255,255,0.65), rgba(248,250,252,0.85));
 }
 
-/* Dark overlay mode */
-.app-body.has-bg.theme-overlay-dark::before {
-    background: linear-gradient(180deg, rgba(2, 6, 23, 0.55), rgba(2, 6, 23, 0.70));
-}
-
-/* Light overlay mode */
-.app-body.has-bg.theme-overlay-light::before {
-    background: linear-gradient(180deg, rgba(255, 255, 255, 0.70), rgba(248, 250, 252, 0.85));
-}
-
-
+/* ============================================================================ */
+/* SHELL & MAIN CONTAINERS */
+/* ============================================================================ */
 
 .app-shell {
     display: flex;
@@ -78,7 +156,7 @@ html, body {
     position: relative;
     z-index: 2;
     flex: 1;
-    background: transparent !important;
+    background: transparent;
 }
 
 .app-main {
@@ -86,238 +164,269 @@ html, body {
     min-height: calc(100vh - 80px);
     background: transparent;
     z-index: 2;
+    animation: fadeInUp 0.6s ease-out;
 }
 
-/* When theme active - add semi-transparent white overlay for content readability */
 .app-body.has-bg .app-main {
     background: rgba(255, 255, 255, 0.55) !important;
     backdrop-filter: blur(12px);
 }
 
+/* ============================================================================ */
+/* SIDEBAR */
+/* ============================================================================ */
+
 .app-sidebar {
-    background: linear-gradient(180deg, var(--brand-ink), #111827 50%, #0b1220 100%);
+    background: linear-gradient(180deg, var(--brand-ink) 0%, #111827 50%, #0b1220 100%);
     box-shadow: 2px 0 20px rgba(15, 23, 42, 0.35);
     position: relative;
     z-index: 15;
+    width: 240px;
+    animation: slideInLeft 0.6s ease-out;
+    overflow-y: auto;
 }
 
 .app-sidebar .nav-link {
     border-radius: 8px;
-    margin: 2px 0;
+    margin: 4px 8px;
     color: #e5e7eb;
+    transition: all var(--transition-fast);
+    position: relative;
 }
 
 .app-sidebar .nav-link:hover {
-    background: linear-gradient(90deg, rgba(37, 99, 235, 0.2), rgba(239, 68, 68, 0.2));
+    background: linear-gradient(90deg, rgba(37, 99, 235, 0.2), rgba(124, 58, 237, 0.2));
     color: #fff;
+    transform: translateX(4px);
 }
+
+.app-sidebar .nav-link.active {
+    background: linear-gradient(90deg, #3b82f6, #7c3aed);
+    color: white;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+/* ============================================================================ */
+/* NAVBAR */
+/* ============================================================================ */
 
 .app-navbar {
     background: linear-gradient(90deg, #ffffff 0%, #f1f5f9 60%, #fff1f2 100%);
     border-bottom: 1px solid #e2e8f0;
     position: relative;
     z-index: 20;
+    animation: slideInRight 0.6s ease-out;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    transition: all var(--transition-smooth);
 }
 
-.app-body.has-bg .app-navbar,
-.app-body[style*="background-image"] .app-navbar {
+.app-body.has-bg .app-navbar {
     background: rgba(248, 250, 252, 0.95) !important;
     border-bottom: 1px solid rgba(226, 232, 240, 0.6);
     backdrop-filter: blur(10px);
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
+
+.app-navbar .nav-link {
+    transition: all var(--transition-fast);
+}
+
+.app-navbar .nav-link:hover {
+    color: var(--brand-blue-light) !important;
+    transform: translateY(-2px);
+}
+
+/* ============================================================================ */
+/* CARDS & COMPONENTS */
+/* ============================================================================ */
 
 .card {
-    border-radius: 14px;
-    box-shadow: 0 6px 20px rgba(2, 6, 23, 0.06);
-    border: 1px solid #e2e8f0;
+    border: 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all var(--transition-smooth);
+    animation: scaleIn 0.4s ease-out;
 }
 
-.app-body.has-bg .card {
-    background: rgba(255, 255, 255, 0.92);
-    border-color: rgba(148, 163, 184, 0.35);
+.card:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-purple) 100%);
+    color: white;
+    border-radius: 12px 12px 0 0;
+    border: 0;
+    padding: 16px;
+}
+
+.btn {
+    border-radius: 8px;
+    transition: all var(--transition-fast);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 .btn-primary {
-    background: linear-gradient(90deg, var(--brand-blue-2), var(--brand-red));
-    border: none;
+    background: linear-gradient(135deg, var(--brand-blue-light) 0%, var(--brand-purple) 100%);
+    border: 0;
+    position: relative;
+    overflow: hidden;
 }
 
-.btn-outline-primary {
-    border-color: var(--brand-blue-2);
-    color: var(--brand-blue-2);
-}
-
-.btn-outline-primary:hover {
-    background: var(--brand-blue-2);
-    color: #fff;
-}
-
-.table thead th {
-    background: #f1f5f9;
-}
-
-.table-responsive {
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
     width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.2);
+    transition: left var(--transition-smooth);
 }
 
-@media (max-width: 991.98px) {
-    .app-shell {
-        flex-direction: column;
-    }
-
-    .app-navbar {
-        position: sticky;
-        top: 0;
-        z-index: 1030;
-    }
-
-    .sidebar-offcanvas {
-        width: 260px;
-    }
-
-    .app-body.has-bg {
-        background-attachment: scroll;
-    }
-
-    .app-shell main {
-        padding: 16px !important;
-    }
+.btn-primary:hover::before {
+    left: 100%;
 }
 
-@media (max-width: 767.98px) {
-    .app-navbar {
-        flex-wrap: wrap;
-        gap: 8px;
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(37, 99, 235, 0.3);
+}
+
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 0.875rem;
+}
+
+.form-control, .form-select {
+    border: 1.5px solid #e5e7eb;
+    border-radius: 8px;
+    transition: all var(--transition-fast);
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(4px);
+}
+
+.form-control:focus, .form-select:focus {
+    border-color: var(--brand-blue-light);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    background: white;
+}
+
+.form-label {
+    font-weight: 600;
+    color: var(--brand-ink);
+    margin-bottom: 6px;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* ============================================================================ */
+/* ALERTS & MESSAGES */
+/* ============================================================================ */
+
+.alert {
+    border-radius: 10px;
+    border: 0;
+    animation: slideInRight 0.4s ease-out;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    color: #166534;
+    box-shadow: 0 4px 12px rgba(22, 101, 52, 0.15);
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    color: var(--brand-red-dark);
+    box-shadow: 0 4px 12px rgba(153, 27, 27, 0.15);
+}
+
+/* ============================================================================ */
+/* APP-BODY BACKGROUND THEME */
+/* ============================================================================ */
+
+.app-body.has-bg {
+    animation: fadeInBackground 0.8s ease-out;
+}
+
+@keyframes fadeInBackground {
+    from {
+        opacity: 0.95;
     }
-
-    .app-navbar .navbar-brand {
-        font-size: 0.95rem;
-        line-height: 1.2;
-        white-space: normal;
-    }
-
-    .app-navbar form {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
-    }
-
-    .app-main {
-        padding: 16px !important;
-    }
-
-    .card {
-        border-radius: 12px;
-    }
-}
-
-@media (max-width: 575.98px) {
-    .app-main {
-        padding: 12px !important;
-    }
-
-    .btn,
-    .form-control,
-    .form-select {
-        font-size: 0.95rem;
-    }
-}
-
-/* Theme Settings Styling */
-.theme-settings-section {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    padding: 2rem;
-    border-radius: 1rem;
-    border-left: 4px solid #2563eb;
-}
-
-.upload-card {
-    transition: all 0.3s ease;
-}
-
-.upload-card:hover {
-    background: #f0f5ff !important;
-    border-color: #2563eb !important;
-}
-
-.upload-card.drag-over {
-    background: #e0e7ff !important;
-    border-color: #1e40af !important;
-}
-
-.form-select-lg,
-.form-control-lg {
-    padding: 0.75rem 1rem;
-    font-size: 1rem;
-    border-radius: 0.5rem;
-}
-
-.theme-overlay-select,
-.theme-size-select {
-    transition: border-color 0.3s, box-shadow 0.3s;
-}
-
-.theme-overlay-select:focus,
-.theme-size-select:focus {
-    border-color: #2563eb;
-    box-shadow: 0 0 0 0.2rem rgba(37, 99, 235, 0.25);
-}
-
-.form-check-lg .form-check-input {
-    width: 1.5rem;
-    height: 1.5rem;
-}
-
-.form-check-lg .form-check-label {
-    font-size: 1rem;
-    margin-left: 0.5rem;
-}
-
-.theme-preview-container {
-    box-shadow: inset 0 2px 8px rgba(2, 6, 23, 0.08);
-    transition: all 0.4s ease;
-}
-
-.btn-lg {
-    padding: 0.75rem 1.5rem !important;
-    font-weight: 500;
-}
-
-/* Mobile Responsive Adjustments */
-@media (max-width: 767.98px) {
-    .theme-settings-section {
-        padding: 1.5rem;
-    }
-
-    .upload-card {
-        padding: 2rem 1rem !important;
-    }
-
-    .form-select-lg,
-    .form-control-lg {
-        font-size: 0.95rem;
-    }
-
-    .btn-lg {
-        padding: 0.6rem 1.25rem !important;
-        font-size: 0.9rem;
+    to {
+        opacity: 1;
     }
 }
 
-/* Card Padding */
-.card {
-    padding: 1.5rem !important;
+.app-body.has-bg .card {
+    animation: scaleIn 0.5s ease-out;
 }
+
+/* ============================================================================ */
+/* RESPONSIVE DESIGN */
+/* ============================================================================ */
 
 @media (max-width: 768px) {
+    .app-sidebar {
+        width: 200px;
+    }
+    
+    .app-body {
+        flex-direction: column;
+    }
+    
     .card {
-        padding: 1.25rem !important;
+        margin-bottom: 12px;
     }
 }
 
-section {
-    display: block;
+/* ============================================================================ */
+/* UTILITY ANIMATIONS */
+/* ============================================================================ */
+
+.animate-fade-up {
+    animation: fadeInUp 0.6s ease-out;
+}
+
+.animate-fade-in {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.animate-slide-left {
+    animation: slideInLeft 0.5s ease-out;
+}
+
+.animate-slide-right {
+    animation: slideInRight 0.5s ease-out;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.4s ease-out;
+}
+
+/* ============================================================================ */
+/* SCROLLBAR STYLING */
+/* ============================================================================ */
+
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, var(--brand-blue-light), var(--brand-purple));
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, var(--brand-blue), var(--brand-purple));
 }

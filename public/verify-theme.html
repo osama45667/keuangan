@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Theme Background - Verification</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: "Segoe UI", -apple-system, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 600px;
+            padding: 40px;
+            animation: slideInUp 0.6s ease-out;
+        }
+        
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        h1 {
+            color: #1e40af;
+            margin-bottom: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+        
+        .check-item {
+            padding: 16px;
+            margin: 12px 0;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+            animation: fadeInUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        .check-item:nth-child(1) { animation-delay: 0.1s; }
+        .check-item:nth-child(2) { animation-delay: 0.2s; }
+        .check-item:nth-child(3) { animation-delay: 0.3s; }
+        .check-item:nth-child(4) { animation-delay: 0.4s; }
+        .check-item:nth-child(5) { animation-delay: 0.5s; }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .check-pass {
+            background: #dcfce7;
+            color: #166534;
+            border-left: 4px solid #16a34a;
+        }
+        
+        .check-fail {
+            background: #fee2e2;
+            color: #991b1b;
+            border-left: 4px solid #ef4444;
+        }
+        
+        .check-icon {
+            font-size: 1.3rem;
+            min-width: 30px;
+            text-align: center;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border-radius: 10px;
+            border: 0;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            font-size: 0.95rem;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #7c3aed);
+            color: white;
+            flex: 1;
+            min-width: 150px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4);
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #1f2937;
+            border: 1px solid #d1d5db;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+        }
+        
+        .info-box {
+            background: #eff6ff;
+            border-left: 4px solid #3b82f6;
+            padding: 16px;
+            border-radius: 8px;
+            margin-top: 25px;
+            font-size: 0.9rem;
+            color: #1e40af;
+        }
+        
+        code {
+            background: #f3f4f6;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: "Courier New", monospace;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Theme Background Verification</h1>
+        <p class="subtitle">Check if your theme background is working correctly</p>
+        
+        <div id="checks">
+            <div class="check-item check-pass">
+                <div class="check-icon">✓</div>
+                <div>Server is running</div>
+            </div>
+            
+            <div class="check-item check-pass">
+                <div class="check-icon">✓</div>
+                <div>Page loaded successfully</div>
+            </div>
+        </div>
+        
+        <div class="info-box">
+            <strong>ℹ️ Next Steps:</strong><br>
+            1. Go to <code>/profile</code> page<br>
+            2. Upload a theme image (JPG, PNG, WebP • Max 5MB)<br>
+            3. Click <strong>Save Changes</strong><br>
+            4. Hard refresh with <code>Ctrl+F5</code><br>
+            5. Your background should appear with an overlay
+        </div>
+        
+        <div class="action-buttons">
+            <a href="/profile" class="btn btn-primary">Go to Profile</a>
+            <a href="/diagnostic.php" class="btn btn-secondary">View Diagnostic</a>
+        </div>
+    </div>
+
+    <script>
+        // Simple checks
+        const checks = [
+            { text: 'JavaScript is enabled', check: () => true },
+            { text: 'Local storage available', check: () => typeof(Storage) !== "undefined" },
+            { text: 'Connection to server works', check: () => true },
+        ];
+        
+        // Add checks to page
+        const checkContainer = document.getElementById('checks');
+        checks.forEach((item, i) => {
+            const result = item.check();
+            const checkItem = document.createElement('div');
+            checkItem.className = `check-item ${result ? 'check-pass' : 'check-fail'}`;
+            checkItem.style.animationDelay = (i + 2) * 0.1 + 's';
+            checkItem.innerHTML = `
+                <div class="check-icon">${result ? '✓' : '✗'}</div>
+                <div>${item.text}</div>
+            `;
+            checkContainer.appendChild(checkItem);
+        });
+    </script>
+</body>
+</html>

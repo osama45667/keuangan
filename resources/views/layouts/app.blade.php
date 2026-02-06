@@ -10,13 +10,22 @@
 </head>
 @php
     $user = auth()->user();
-    $bgUrl = ($user && $user->theme_bg_path)
-        ? \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path)
-        : null;
+    $bgUrl = null;
+    $hasBg = false;
+    
+    if ($user && $user->theme_bg_path) {
+        $bgUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path);
+        // Escape single quotes and backslashes for CSS URL
+        $bgUrl = str_replace("'", "\\'", $bgUrl);
+        $hasBg = true;
+    }
+    
     $bgSize = $user?->theme_bg_size ?? 'cover';
     $overlay = $user?->theme_overlay ?? 'auto';
 @endphp
-<body class="app-body @if($bgUrl)has-bg theme-overlay-{{ $overlay }}@endif"@if($bgUrl) style="background-image: url('{{ $bgUrl }}'); background-size: {{ $bgSize }}; background-position: center; background-attachment: fixed; background-repeat: no-repeat;"@endif>
+<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" 
+    @if($hasBg)style="background-image: url('{{ $bgUrl }}'); background-size: {{ $bgSize }}; background-position: center; background-attachment: fixed; background-repeat: no-repeat;" data-theme-bg @endif>
+
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
     <div class="flex-grow-1">

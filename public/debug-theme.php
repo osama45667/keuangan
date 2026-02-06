@@ -52,21 +52,21 @@ try {
         echo '<h3>File Storage Check</h3>';
         echo '<pre>';
         
-        // Check if file exists in storage
-        $storage = \Illuminate\Support\Facades\Storage::disk('public');
-        $exists = $storage->exists($user->theme_bg_path);
+        // Check if file exists
+        $path = $user->theme_bg_path;
+        $storagePath = storage_path('app/public/' . $path);
+        $exists = file_exists($storagePath);
         
-        echo "File path in storage: " . htmlspecialchars($user->theme_bg_path) . "\n";
-        echo "Exists in storage: " . ($exists ? '<span class="success">✓ YES</span>' : '<span class="error">✗ NO</span>') . "\n";
+        echo "File path: " . htmlspecialchars($path) . "\n";
+        echo "Storage exists: " . ($exists ? '<span class="success">✓ YES</span>' : '<span class="error">✗ NO</span>') . "\n";
         
-        // Generate URL using Storage facade
-        // @phpstan-ignore-next-line
-        $url = $storage->url($user->theme_bg_path);
+        // Generate URL manually
+        $url = '/storage/' . $path;
         echo "Generated URL: " . htmlspecialchars($url) . "\n";
         
-        // Try to get file info
+        // Check file size
         if ($exists) {
-            $size = $storage->size($user->theme_bg_path);
+            $size = filesize($storagePath);
             $sizeKB = round($size / 1024, 2);
             echo "File size: " . $sizeKB . " KB\n";
         }
