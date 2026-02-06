@@ -118,7 +118,11 @@ html, body {
 
 /* When theme uploaded - accept background-image from inline style */
 .app-body.has-bg {
-    background: none !important;
+    animation: none !important;
+    background-attachment: fixed !important;
+    background-size: cover !important;
+    background-position: center !important;
+    background-repeat: no-repeat !important;
 }
 
 /* ============================================================================ */
