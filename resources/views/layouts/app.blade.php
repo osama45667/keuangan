@@ -21,20 +21,9 @@
     $bgSize = $user?->theme_bg_size ?? 'cover';
     $overlay = $user?->theme_overlay ?? 'auto';
 @endphp
-<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif">
+<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" @if($hasBg)style="--bg-image-url: url('{{ $bgUrl }}');"@endif>
     @if($hasBg)
-        <div id="theme-bg" data-bg-url="{{ $bgUrl }}" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; background-size:{{ $bgSize }}; background-position:center; background-repeat:no-repeat; background-attachment:fixed; pointer-events:none;"></div>
-        <script>
-            (function() {
-                var bg = document.getElementById('theme-bg');
-                if (bg) {
-                    var url = bg.getAttribute('data-bg-url');
-                    if (url) {
-                        bg.style.backgroundImage = 'url("' + url + '")';
-                    }
-                }
-            })();
-        </script>
+        <div id="theme-bg" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; background-image:var(--bg-image-url); background-size:{{ $bgSize }}; background-position:center; background-repeat:no-repeat; background-attachment:fixed; pointer-events:none;"></div>
     @endif
 
 <div class="d-flex app-shell" style="min-height:100vh;">
