@@ -16,8 +16,9 @@
     if ($user && $user->theme_bg_path) {
         // Use our dedicated endpoint instead of direct storage URL
         $bgUrl = route('api.user.background-image');
-        // Append timestamp set after save to bust cache when user updates background
-        $bgTs = session('bg_ts');
+        // Append timestamp from cookie or session to bust cache when user updates background
+        // Cookie persists across page navigations so background updates on all pages
+        $bgTs = request()->cookie('bg_ts') ?? session('bg_ts');
         if ($bgTs) {
             $bgUrl .= '?ts=' . $bgTs;
         }

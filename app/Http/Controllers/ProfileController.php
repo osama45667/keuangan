@@ -53,11 +53,15 @@ class ProfileController extends Controller
 
         $response = Redirect::route('profile.edit')->with('status', 'profile-updated')->with('bg_ts', time());
 
+        // Also set cookie so cache-bust works across ALL pages
+        $response->withCookie(cookie('bg_ts', time(), 60 * 24 * 365));
+
         $cookieMinutes = 60 * 24 * 365;
         if ($request->boolean('theme_remove') || !$request->user()->theme_bg_path) {
             $response->withCookie(cookie()->forget('theme_bg_path'));
             $response->withCookie(cookie()->forget('theme_bg_size'));
             $response->withCookie(cookie()->forget('theme_overlay'));
+            $response->withCookie(cookie()->forget('bg_ts'));
         } else {
             $response->withCookie(cookie('theme_bg_path', $request->user()->theme_bg_path, $cookieMinutes));
             $response->withCookie(cookie('theme_bg_size', $request->user()->theme_bg_size ?? 'cover', $cookieMinutes));
