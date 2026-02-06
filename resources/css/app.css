@@ -28,7 +28,18 @@ html, body {
     z-index: 0;
 }
 
-/* Show overlay when background-image is in inline style */
+/* When background-image is set, override gradient */
+.app-body[style*="background-image"] {
+    background: none !important;
+    background-image: inherit !important;
+    background-size: inherit !important;
+    background-position: inherit !important;
+    background-attachment: inherit !important;
+    background-repeat: inherit !important;
+}
+
+/* Overlay - always show when has-bg class exists */
+.app-body.has-bg::before,
 .app-body[style*="background-image"]::before {
     content: '';
     position: fixed;
@@ -70,10 +81,17 @@ html, body {
     z-index: 10;
 }
 
-/* When background-image exists, make main semi-transparent */
+/* When background-image exists, make main transparent so bg shows through */
 .app-body[style*="background-image"] .app-main {
-    background: rgba(255, 255, 255, 0.86);
-    backdrop-filter: blur(12px);
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
+    border-radius: 0;
+    box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.15);
+}
+
+.app-body.has-bg .app-main {
+    background: rgba(255, 255, 255, 0.85) !important;
+    backdrop-filter: blur(12px) !important;
     border-radius: 0;
     box-shadow: inset 0 0 60px rgba(0, 0, 0, 0.15);
 }
@@ -103,8 +121,9 @@ html, body {
     z-index: 20;
 }
 
-.app-body.has-bg .app-navbar {
-    background: rgba(248, 250, 252, 0.92);
+.app-body.has-bg .app-navbar,
+.app-body[style*="background-image"] .app-navbar {
+    background: rgba(248, 250, 252, 0.92) !important;
     border-bottom: 1px solid rgba(226, 232, 240, 0.6);
     backdrop-filter: blur(12px);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
