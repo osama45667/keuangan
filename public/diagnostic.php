@@ -131,7 +131,7 @@ if (count($themeFiles) > 0) {
     echo "Generated URLs:<br>";
     
     foreach ($urls as $pattern => $url) {
-        $accessible = file_exists(public_path($url));
+        $accessible = @file_exists(dirname(__FILE__) . '/' . str_replace('/storage/', 'storage/', $url));
         $class = $accessible ? 'check-pass' : 'check-fail';
         echo "<div class='check $class'>
             <div><strong>$pattern</strong><br>
