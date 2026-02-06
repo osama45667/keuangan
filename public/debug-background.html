@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Background Feature Debug</title>
+    <style>
+        body { font-family: monospace; background: #f5f5f5; padding: 20px; }
+        .section { background: white; margin: 20px 0; padding: 20px; border-radius: 8px; }
+        h2 { border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .ok { color: green; font-weight: bold; }
+        .error { color: red; font-weight: bold; }
+        code { background: #eee; padding: 2px 6px; border-radius: 3px; }
+        pre { background: #f8f8f8; padding: 10px; border-left: 3px solid #007bff; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Background Feature Debug Panel</h1>
+    
+    <div class="section">
+        <h2>1. Inspect Current Page CSS</h2>
+        <p>Open DevTools (F12) and run this in Console:</p>
+        <pre>
+// Check body classes
+console.log('Body classes:', document.body.className);
+
+// Check inline style
+console.log('Body inline style:', document.body.getAttribute('style'));
+
+// Check computed styles
+const computed = window.getComputedStyle(document.body);
+console.log('Background image:', computed.backgroundImage);
+console.log('Background:', computed.background);
+
+// Check if .has-bg class present
+console.log('Has .has-bg class:', document.body.classList.contains('has-bg'));
+
+// Check ::before pseudo element
+const beforeStyle = window.getComputedStyle(document.body, '::before');
+console.log('::before exists:', beforeStyle.content !== 'none');
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2>2. Check App CSS File</h2>
+        <p>Inspect these CSS rules:</p>
+        <pre>
+.app-body { 
+    background: linear-gradient(...);  ← Default gradient
+}
+
+.app-body.has-bg { 
+    background: none !important;       ← Removes gradient
+}
+
+.app-body.has-bg::before {
+    content: '';
+    position: fixed;
+    background: linear-gradient(...); ← Overlay effect
+    z-index: 1;
+}
+
+.app-body.has-bg .app-main {
+    background: rgba(255, 255, 255, 0.55);  ← Content blur
+    backdrop-filter: blur(12px);
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2>3. Test Inline Style Application</h2>
+        <button onclick="testInlineStyle()">Test Inline Background</button>
+        <div id="test-box" style="
+            width: 100%; 
+            height: 300px; 
+            background-image: url('data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 300%22><rect fill=%22%234a90e2%22 width=%22400%22 height=%22300%22/></svg>');
+            background-size: cover;
+            background-position: center;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            margin-top: 10px;
+        "></div>
+        <p style="margin-top: 10px; font-size: 12px; color: #666;">
+            ↑ If this box shows a blue gradient, background-image inline style works ✓
+        </p>
+        <script>
+            function testInlineStyle() {
+                alert('Test box has inline style:\nwidth: 100%; height: 300px;\nbackground-image: url(...);\nbackground-size: cover;\n\nIf you see a blue box above, inline styles work!');
+            }
+        </script>
+    </div>
+
+    <div class="section">
+        <h2>4. Quick Checklist</h2>
+        <ul>
+            <li>✓ Form loads without JavaScript errors? (Check Console)</li>
+            <li>✓ Upload image works? (Try uploading)</li>
+            <li>✓ Save Changes submits? (Try saving)</li>
+            <li>✓ Page refreshes after save?</li>
+            <li>✓ Body tag has class="app-body has-bg"?</li>
+            <li>✓ Body has inline style with background-image?</li>
+            <li>✓ CSS file loads? (Check Network tab, app.css ~80KB)</li>
+            <li>✓ Background image visible? (Should see it full screen)</li>
+            <li>✓ Overlay visible? (Dark/light tint on top)</li>
+            <li>✓ Content has blur? (Page content should look blurred)</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>5. If Background Still Not Showing</h2>
+        <p><strong>Step 1:</strong> Open DevTools (F12) → Elements tab</p>
+        <p><strong>Step 2:</strong> Check body tag attributes:</p>
+        <pre>
+&lt;body class="app-body has-bg theme-overlay-auto" 
+      style="background-image: url('/storage/themes/...')"&gt;
+        </pre>
+        <p><strong>Step 3:</strong> If class/style missing → Form not saving correctly</p>
+        <p><strong>Step 4:</strong> If class/style present → CSS rule issue</p>
+        <p><strong>Step 5:</strong> If image URL 404 → Storage/symlink issue</p>
+    </div>
+
+    <div class="section">
+        <h2>6. Test URLs</h2>
+        <ul>
+            <li><a href="/test-background.php" target="_blank">→ Background Data Test</a></li>
+            <li><a href="/check-all-themes.php" target="_blank">→ All Users Themes</a></li>
+            <li><a href="/verify-theme.html" target="_blank">→ Theme Verification</a></li>
+        </ul>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Automatically check and show current page status
+            setTimeout(function() {
+                const isProfile = window.location.pathname.includes('/profile');
+                if (isProfile) {
+                    console.log('📊 PROFILE PAGE DIAGNOSTIC:');
+                    console.log('Has .has-bg class:', document.body.classList.contains('has-bg'));
+                    console.log('Body inline style:', document.body.getAttribute('style'));
+                    console.log('Background image (computed):', window.getComputedStyle(document.body).backgroundImage);
+                }
+            }, 100);
+        });
+    </script>
+</body>
+</html>
