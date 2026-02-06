@@ -25,10 +25,11 @@ html, body {
     font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100vh;
     position: relative;
-    z-index: 1;
+    z-index: 0;
 }
 
-.app-body::before {
+/* Show overlay when background-image is in inline style */
+.app-body[style*="background-image"]::before {
     content: '';
     position: fixed;
     top: 0;
@@ -36,24 +37,9 @@ html, body {
     right: 0;
     bottom: 0;
     background: linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55));
-    z-index: 2;
-    opacity: 0;
-    transition: opacity 0.3s ease-in-out;
+    z-index: 1;
+    opacity: 1;
     pointer-events: none;
-}
-
-.app-body.has-bg::before {
-    opacity: 1 !important;
-}
-
-.app-body.show-bg-overlay::before {
-    opacity: 1 !important;
-}
-
-.app-body.has-bg {
-    background-attachment: fixed;
-    background-repeat: no-repeat;
-    background-position: center;
 }
 
 .app-body.theme-overlay-dark::before {
@@ -78,23 +64,14 @@ html, body {
     background: transparent;
 }
 
-.app-body.has-bg .app-shell {
-    background: transparent;
-}
-
 .app-main {
     min-height: 100vh;
     background: #f8fafc;
     z-index: 10;
 }
 
-.app-body.has-bg .app-main {
-    background: rgba(255, 255, 255, 0.85);
-    backdrop-filter: blur(15px);
-    border-radius: 0;
-}
-
-.app-body.has-bg .app-main {
+/* When background-image exists, make main semi-transparent */
+.app-body[style*="background-image"] .app-main {
     background: rgba(255, 255, 255, 0.86);
     backdrop-filter: blur(12px);
     border-radius: 0;
