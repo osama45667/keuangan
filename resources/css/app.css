@@ -165,7 +165,7 @@ html, body {
     position: relative;
     z-index: 20;
     background: rgba(255,255,255,0.98);
-    border-radius: 12px;
+    border-radius: 4px;
     box-shadow: 0 8px 24px rgba(2,6,23,0.06);
     overflow: visible;
 }
@@ -306,7 +306,7 @@ html, body {
 
 .card {
     border: 0;
-    border-radius: 12px;
+    border-radius: 4px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     transition: all var(--transition-smooth);
     animation: scaleIn 0.4s ease-out;
@@ -320,13 +320,13 @@ html, body {
 .card-header {
     background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-purple) 100%);
     color: white;
-    border-radius: 12px 12px 0 0;
+    border-radius: 4px 4px 0 0;
     border: 0;
     padding: 16px;
 }
 
 .btn {
-    border-radius: 8px;
+    border-radius: 4px;
     transition: all var(--transition-fast);
     font-weight: 500;
     text-transform: uppercase;
@@ -367,7 +367,7 @@ html, body {
 
 .form-control, .form-select {
     border: 1.5px solid #e5e7eb;
-    border-radius: 8px;
+    border-radius: 4px;
     transition: all var(--transition-fast);
     background: rgba(255, 255, 255, 0.8);
     backdrop-filter: blur(4px);
