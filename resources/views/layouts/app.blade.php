@@ -34,11 +34,12 @@
     };
     $bgStyle = $hasBg
         ? [
-            "background-image: {$overlayCss}, url('{$bgUrl}')",
-            "background-size: {$bgSize}",
-            "background-repeat: no-repeat",
-            "background-position: center",
-            "background-attachment: fixed",
+            "background-image: {$overlayCss}, url('{$bgUrl}') !important",
+            "background-size: {$bgSize} !important",
+            "background-repeat: no-repeat !important",
+            "background-position: center !important",
+            "background-attachment: fixed !important",
+            "background-color: transparent !important",
         ]
         : [];
 @endphp
