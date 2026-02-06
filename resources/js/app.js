@@ -89,6 +89,31 @@ document.addEventListener('DOMContentLoaded', function() {
         reader.readAsDataURL(file);
     }
 
+    // Listen for size mode changes and update background immediately
+    if (sizeSelect) {
+        sizeSelect.addEventListener('change', function() {
+            var themeBgEl = document.getElementById('theme-bg');
+            if (themeBgEl) {
+                themeBgEl.style.backgroundSize = this.value;
+                console.log('[Theme] Size mode changed to: ' + this.value);
+            }
+        });
+    }
+
+    // Listen for overlay mode changes and update body class
+    if (overlaySelect) {
+        overlaySelect.addEventListener('change', function() {
+            var body = document.querySelector('.app-body');
+            if (body) {
+                // Remove all overlay classes
+                body.classList.remove('theme-overlay-light', 'theme-overlay-dark', 'theme-overlay-auto');
+                // Add new class
+                body.classList.add('theme-overlay-' + this.value);
+                console.log('[Theme] Overlay mode changed to: ' + this.value);
+            }
+        });
+    }
+
     // Handle remove checkbox
     if (themeRemove) {
         themeRemove.addEventListener('change', () => {

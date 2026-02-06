@@ -74,6 +74,34 @@
         
         // Also apply after a small delay
         setTimeout(applyBackgroundImage, 100);
+        
+        // Listen for size mode changes and update background size in real-time
+        var sizeSelect = document.getElementById('theme_bg_size');
+        if (sizeSelect) {
+            sizeSelect.addEventListener('change', function() {
+                var el = document.getElementById('theme-bg');
+                if (el) {
+                    el.setAttribute('data-bg-size', this.value);
+                    el.style.backgroundSize = this.value;
+                    console.log('[BG] Size mode changed to: ' + this.value);
+                }
+            });
+        }
+        
+        // Listen for overlay mode changes and update body class in real-time
+        var overlaySelect = document.getElementById('theme_overlay');
+        if (overlaySelect) {
+            overlaySelect.addEventListener('change', function() {
+                var body = document.querySelector('.app-body');
+                if (body) {
+                    // Remove all overlay classes
+                    body.classList.remove('theme-overlay-light', 'theme-overlay-dark', 'theme-overlay-auto');
+                    // Add new class
+                    body.classList.add('theme-overlay-' + this.value);
+                    console.log('[BG] Overlay mode changed to: ' + this.value);
+                }
+            });
+        }
         </script>
     @endif
 
