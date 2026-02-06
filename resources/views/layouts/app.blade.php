@@ -14,10 +14,9 @@
     $hasBg = false;
     
     if ($user && $user->theme_bg_path) {
-        // Use our dedicated endpoint instead of direct storage URL
-        $bgUrl = route('api.user.background-image');
-        // Append timestamp from cookie or session to bust cache when user updates background
-        // Cookie persists across page navigations so background updates on all pages
+        // Ambil URL dari disk public supaya file upload bisa diakses
+        $bgUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path);
+        // Tambah timestamp untuk cache-bust
         $bgTs = request()->cookie('bg_ts') ?? session('bg_ts');
         if ($bgTs) {
             $bgUrl .= '?ts=' . $bgTs;
@@ -34,48 +33,31 @@
         <script>
         function applyBackgroundImage() {
             var el = document.getElementById('theme-bg');
-            if (!el) {
-                console.error('[BG] Element not found');
-                return;
-            }
+            if (!el) return;
             
             var url = el.getAttribute('data-bg-url') || '';
             var size = el.getAttribute('data-bg-size') || 'cover';
+            if (!url.trim()) return;
             
-            if (!url || !url.trim()) {
-                console.error('[BG] No URL found in data attribute');
-                return;
-            }
-            
-            console.log('[BG] Applying background: ' + url + ' | Size: ' + size);
-            
-            // Use a new Image to preload and check if URL is valid
             var img = new Image();
             img.onload = function() {
-                console.log('[BG] Image loaded successfully, applying to background');
                 el.style.backgroundImage = 'url("' + url + '")';
                 el.style.backgroundSize = size;
             };
             img.onerror = function() {
-                console.error('[BG] Failed to load image from: ' + url);
-                // Still apply it anyway - browser might have cached it
                 el.style.backgroundImage = 'url("' + url + '")';
                 el.style.backgroundSize = size;
             };
             img.src = url;
         }
         
-        // Apply immediately
         if (document.readyState === 'loading') {
             document.addEventListener('DOMContentLoaded', applyBackgroundImage);
         } else {
             applyBackgroundImage();
         }
-        
-        // Also apply after a small delay
         setTimeout(applyBackgroundImage, 100);
         
-        // Listen for size mode changes and update background size in real-time
         var sizeSelect = document.getElementById('theme_bg_size');
         if (sizeSelect) {
             sizeSelect.addEventListener('change', function() {
@@ -83,22 +65,17 @@
                 if (el) {
                     el.setAttribute('data-bg-size', this.value);
                     el.style.backgroundSize = this.value;
-                    console.log('[BG] Size mode changed to: ' + this.value);
                 }
             });
         }
         
-        // Listen for overlay mode changes and update body class in real-time
         var overlaySelect = document.getElementById('theme_overlay');
         if (overlaySelect) {
             overlaySelect.addEventListener('change', function() {
                 var body = document.querySelector('.app-body');
                 if (body) {
-                    // Remove all overlay classes
                     body.classList.remove('theme-overlay-light', 'theme-overlay-dark', 'theme-overlay-auto');
-                    // Add new class
                     body.classList.add('theme-overlay-' + this.value);
-                    console.log('[BG] Overlay mode changed to: ' + this.value);
                 }
             });
         }
