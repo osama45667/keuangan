@@ -1,73 +1,129 @@
 <?php
-// Debug: Check if theme URL is accessible and what's being generated
+/**
+ * Theme Debug Page
+ * Safely check theme configuration without complex request handling
+ */
 
-require __DIR__ . '/../vendor/autoload.php';
-$app = require __DIR__ . '/../bootstrap/app.php';
-$app->make(\Illuminate\Contracts\Http\Kernel::class)->handle(
-    $request = \Illuminate\Http\Request::capture()
-);
+// Set error handling
+error_reporting(E_ALL);
+ini_set('display_errors', '1');
 
-$user = auth()->user();
+echo "<!DOCTYPE html>";
+echo "<html>";
+echo "<head><title>Theme Debug</title><style>";
+echo "body { font-family: sans-serif; margin: 20px; }";
+echo ".success { color: green; } .error { color: red; } .warning { color: orange; }";
+echo "pre { background: #f5f5f5; padding: 15px; border-radius: 5px; overflow: auto; }";
+echo "</style></head>";
+echo "<body>";
 
-if (!$user) {
-    die('Not authenticated. Please login first.');
-}
+echo "<h2>🔧 Theme Debug Information</h2>";
 
-echo "<h2>Theme Debug Info</h2>";
-echo "<pre>";
-echo "User: " . $user->name . "\n";
-echo "theme_bg_path in DB: " . ($user->theme_bg_path ?? 'NULL') . "\n";
-echo "theme_bg_size in DB: " . ($user->theme_bg_size ?? 'NULL') . "\n";
-echo "theme_overlay in DB: " . ($user->theme_overlay ?? 'NULL') . "\n";
-
-if ($user->theme_bg_path) {
-    $url = \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path);
-    echo "\nGenerated URL: " . $url . "\n";
-    echo "Full URL: " . url($url) . "\n";
+try {
+    // Load Laravel
+    require __DIR__ . '/../vendor/autoload.php';
     
-    // Check if file exists
-    $exists = \Illuminate\Support\Facades\Storage::disk('public')->exists($user->theme_bg_path);
-    echo "File exists in storage: " . ($exists ? 'YES' : 'NO') . "\n";
+    // Bootstrap Laravel app
+    $app = require __DIR__ . '/../bootstrap/app.php';
+    $kernel = $app->make(\Illuminate\Contracts\Http\Kernel::class);
     
-    // Check if accessible via public/storage
-    $public_path = public_path('storage/' . basename($user->theme_bg_path));
-    echo "Public path check: " . ($public_path) . "\n";
-    echo "Accessible via web: " . ((file_exists($public_path) || is_link(public_path('storage'))) ? 'YES' : 'NO (symlink missing?)') . "\n";
-} else {
-    echo "\nNo theme set\n";
-}
-
-echo "\nCSS Rules to Apply:\n";
-if ($user->theme_bg_path) {
-    $url = \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path);
-    echo "background-image: url('" . $url . "');\n";
-    echo "background-size: " . ($user->theme_bg_size ?? 'cover') . ";\n";
-    echo "Class: has-bg theme-overlay-" . ($user->theme_overlay ?? 'auto') . "\n";
-}
-
-echo "</pre>";
-
-echo "<h2>Test CSS Rendering</h2>";
-if ($user->theme_bg_path) {
-    $url = \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path);
-    $size = $user->theme_bg_size ?? 'cover';
-    $overlay = $user->theme_overlay ?? 'auto';
+    // Create a simple request
+    $request = \Illuminate\Http\Request::capture();
     
-    echo "<div style='
-        width: 100%;
-        min-height: 200px;
-        background-image: url(\"" . $url . "\");
-        background-size: " . $size . ";
-        background-position: center;
-        background-attachment: fixed;
-        background-repeat: no-repeat;
-        border: 2px solid red;
-    '>";
-    echo "<div style='background: rgba(255,255,255,0.75); padding: 20px; backdrop-filter: blur(10px);'>";
-    echo "If you see background image behind this box, CSS is working!";
-    echo "</div>";
-    echo "</div>";
-} else {
-    echo "No theme uploaded yet.";
+    // Get user from database directly
+    $user = \App\Models\User::find(auth()->id() ?? 1);
+    
+    if (!$user) {
+        echo '<p class="error">❌ Could not load user. Make sure you are logged in.</p>';
+        exit;
+    }
+    
+    echo '<h3>User Information</h3>';
+    echo '<pre>';
+    echo "Name: " . htmlspecialchars($user->name) . "\n";
+    echo "Email: " . htmlspecialchars($user->email) . "\n";
+    echo "</pre>";
+    
+    echo '<h3>Database - Theme Fields</h3>';
+    echo '<pre>';
+    echo "theme_bg_path: " . (empty($user->theme_bg_path) ? '<span class="warning">NOT SET</span>' : '<span class="success">' . htmlspecialchars($user->theme_bg_path) . '</span>') . "\n";
+    echo "theme_bg_size: " . htmlspecialchars($user->theme_bg_size ?? 'cover') . "\n";
+    echo "theme_overlay: " . htmlspecialchars($user->theme_overlay ?? 'auto') . "\n";
+    echo "</pre>";
+    
+    if ($user->theme_bg_path) {
+        echo '<h3>File Storage Check</h3>';
+        echo '<pre>';
+        
+        // Check if file exists in storage
+        $disk = \Illuminate\Support\Facades\Storage::disk('public');
+        $exists = $disk->exists($user->theme_bg_path);
+        
+        echo "File path in storage: " . htmlspecialchars($user->theme_bg_path) . "\n";
+        echo "Exists in storage: " . ($exists ? '<span class="success">✓ YES</span>' : '<span class="error">✗ NO</span>') . "\n";
+        
+        // Generate URL
+        $url = $disk->url($user->theme_bg_path);
+        echo "Generated URL: " . htmlspecialchars($url) . "\n";
+        
+        // Try to get file info
+        if ($exists) {
+            $size = $disk->size($user->theme_bg_path);
+            echo "File size: " . ($size / 1024) . " KB\n";
+        }
+        
+        echo "</pre>";
+        
+        echo '<h3>CSS Inline Style (as rendered in HTML)</h3>';
+        echo '<pre>';
+        echo "style=\"\n";
+        echo "  background-image: url('" . htmlspecialchars($url) . "');\n";
+        echo "  background-size: " . htmlspecialchars($user->theme_bg_size ?? 'cover') . ";\n";
+        echo "  background-position: center;\n";
+        echo "  background-attachment: fixed;\n";
+        echo "  background-repeat: no-repeat;\n";
+        echo "\"";
+        echo "</pre>";
+        
+        echo '<h3>CSS Class Names</h3>';
+        echo '<pre>';
+        echo 'class="app-body has-bg theme-overlay-' . htmlspecialchars($user->theme_overlay ?? 'auto') . '"';
+        echo '</pre>';
+        
+        echo '<h3>✅ Visual Test</h3>';
+        echo '<div style="'
+            . 'width: 100%; '
+            . 'height: 300px; '
+            . 'border: 3px solid red; '
+            . 'margin: 20px 0; '
+            . 'background-image: url(\'' . htmlspecialchars($url) . '\'); '
+            . 'background-size: cover; '
+            . 'background-position: center; '
+            . 'background-attachment: fixed; '
+            . 'background-repeat: no-repeat;'
+            . '">';
+            echo '<div style="'
+                . 'background: rgba(255,255,255,0.65); '
+                . 'padding: 20px; '
+                . 'backdrop-filter: blur(8px); '
+                . 'height: 100%;'
+                . '">';
+                echo '<p style="color: #333; margin: 0;">If you see the uploaded image behind this box, CSS rendering is working! ✓</p>';
+            echo '</div>';
+        echo '</div>';
+        
+    } else {
+        echo '<p class="warning">⚠️ No theme image set in database.</p>';
+    }
+    
+} catch (\Exception $e) {
+    echo '<h3 class="error">❌ Error</h3>';
+    echo '<pre class="error">';
+    echo htmlspecialchars($e->getMessage()) . "\n\n";
+    echo htmlspecialchars($e->getTraceAsString());
+    echo '</pre>';
 }
+
+echo '</body>';
+echo '</html>';
 ?>
