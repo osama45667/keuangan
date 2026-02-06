@@ -17,6 +17,25 @@
     $overlay = $user?->theme_overlay ?? 'auto';
 @endphp
 <body class="app-body @if($bgUrl)has-bg theme-overlay-{{ $overlay }}@endif"@if($bgUrl) style="background-image: url('{{ $bgUrl }}'); background-size: {{ $bgSize }}; background-position: center; background-attachment: fixed; background-repeat: no-repeat;"@endif>
+
+<!-- DEBUG: Check if theme is loaded -->
+@if($bgUrl)
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const body = document.querySelector('.app-body');
+        console.log('✓ Theme Debug:');
+        console.log('  URL:', '{{ $bgUrl }}');
+        console.log('  Size:', '{{ $bgSize }}');
+        console.log('  Overlay:', '{{ $overlay }}');
+        console.log('  Body classes:', body.className);
+        console.log('  Body inline style:', body.getAttribute('style'));
+        console.log('  Computed background-image:', window.getComputedStyle(body).backgroundImage);
+        console.log('  Computed background-size:', window.getComputedStyle(body).backgroundSize);
+        console.log('  Overlay element (::before)', window.getComputedStyle(body, '::before').background);
+    });
+</script>
+@endif
+
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
     <div class="flex-grow-1">

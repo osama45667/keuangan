@@ -28,14 +28,11 @@ html, body {
     z-index: 0;
 }
 
-/* CRITICAL: When has-bg class exists, completely disable gradient and use inline styles */
+/* CRITICAL: When has-bg class exists, clear gradient ONLY - inline styles will show through */
 .app-body.has-bg {
-    background: none !important;
-    background-image: inherit !important;
-    background-size: inherit !important;
-    background-position: inherit !important;
-    background-attachment: inherit !important;
-    background-repeat: inherit !important;
+    /* Just clear the gradient, don't touch inline style properties */
+    background-image: none !important;
+    background-color: transparent !important;
 }
 
 /* Overlay gradient - MUST show when has-bg exists */
