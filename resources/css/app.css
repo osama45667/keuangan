@@ -133,8 +133,8 @@ html, body {
     background-position: center center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
-    will-change: transform, opacity;
-    transition: opacity 0.6s ease;
+    will-change: transform;
+    pointer-events: none;
 }
 
 /* ensure app shell/content renders above the background */
