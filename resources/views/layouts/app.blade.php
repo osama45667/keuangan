@@ -23,8 +23,22 @@
     $bgSize = $user?->theme_bg_size ?? 'cover';
     $overlay = $user?->theme_overlay ?? 'auto';
 @endphp
-<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" 
-@if($hasBg)style="background: none; background-image: url('{{ $bgUrl }}') !important; background-size: {{ $bgSize }}; background-position: center; background-attachment: fixed; background-repeat: no-repeat; background-color: transparent;" data-theme-bg @endif>
+<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif">
+    @if($hasBg)
+        <div id="theme-bg" data-theme-size="{{ $bgSize }}" data-theme-overlay="{{ $overlay }}" style="background-image: url('{{ $bgUrl }}');"></div>
+        <script>
+            (function(){
+                var el = document.getElementById('theme-bg');
+                if (!el) return;
+                var size = el.getAttribute('data-theme-size') || 'cover';
+                el.style.backgroundSize = size;
+                var overlay = el.getAttribute('data-theme-overlay');
+                if (overlay) {
+                    document.body.classList.add('theme-overlay-' + overlay);
+                }
+            })();
+        </script>
+    @endif
 
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
