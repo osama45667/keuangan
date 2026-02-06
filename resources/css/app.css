@@ -125,14 +125,11 @@ html, body {
 /* Background image - fixed positioned behind all content */
 #theme-bg {
     background-size: cover !important;
-    background-position: center !important;
+    background-position: top center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
-/* Fallback color when image doesn't cover (contain mode) - match top/dark theme */
-    background-color: var(--brand-ink);
-    background-blend-mode: normal;
-    /* Prefer image anchored to top so edges align with header */
-    background-position: top center !important;
+    /* Fallback color when image doesn't cover (contain mode) - match dark header */
+    background-color: #0f172a;
     z-index: -10 !important;
 }
 
