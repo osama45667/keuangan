@@ -32,9 +32,24 @@
         'dark'  => 'linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55))',
         default => 'linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.35))',
     };
-    $bgStyle = $hasBg ? "background-image: {$overlayCss}, url('{$bgUrl}'); background-size: {$bgSize}; background-repeat: no-repeat; background-position: center; background-attachment: fixed;" : '';
+    $bgStyle = $hasBg
+        ? [
+            "background-image: {$overlayCss}, url('{$bgUrl}')",
+            "background-size: {$bgSize}",
+            "background-repeat: no-repeat",
+            "background-position: center",
+            "background-attachment: fixed",
+        ]
+        : [];
 @endphp
-<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" @if($hasBg) style="{{ $bgStyle }}" @endif">
+@if($hasBg)
+    <style>
+        .app-body.has-bg {
+            {!! implode('; ', $bgStyle) !!};
+        }
+    </style>
+@endif
+<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif">
 
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
