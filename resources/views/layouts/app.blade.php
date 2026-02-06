@@ -23,7 +23,20 @@
 @endphp
 <body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif">
     @if($hasBg)
-        <div id="theme-bg" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; background-image:url('{!! $bgUrl !!}'); background-size:{{ $bgSize }}; background-position:center; background-repeat:no-repeat; background-attachment:fixed; pointer-events:none;"></div>
+        <div id="theme-bg" data-bg-url="{!! $bgUrl !!}" data-bg-size="{{ $bgSize }}" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:0; background-position:center; background-repeat:no-repeat; background-attachment:fixed; background-size:cover; pointer-events:none;"></div>
+        <script>
+        (function() {
+            var el = document.getElementById('theme-bg');
+            if (el) {
+                var url = el.getAttribute('data-bg-url');
+                var size = el.getAttribute('data-bg-size') || 'cover';
+                if (url) {
+                    el.style.backgroundImage = 'url(' + url + ')';
+                    el.style.backgroundSize = size;
+                }
+            }
+        })();
+        </script>
     @endif
 
 <div class="d-flex app-shell" style="min-height:100vh;">
