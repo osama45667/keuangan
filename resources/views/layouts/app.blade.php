@@ -40,41 +40,5 @@
 </div>
 @stack('scripts')
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-
-<!-- Apply theme background with !important override -->
-@if($bgUrl)
-<script>
-    (function() {
-        function applyTheme() {
-            const body = document.body;
-            const bgUrl = '{{ addslashes($bgUrl) }}';
-            const bgSize = '{{ $bgSize }}';
-            
-            // Force background-image with !important
-            body.style.setProperty('background-image', `url("${bgUrl}")`, 'important');
-            body.style.setProperty('background-size', bgSize, 'important');
-            body.style.setProperty('background-position', 'center', 'important');
-            body.style.setProperty('background-attachment', 'fixed', 'important');
-            body.style.setProperty('background-repeat', 'no-repeat', 'important');
-            
-            // Ensure overlay visible
-            const overlay = document.querySelector('.app-body::before');
-            if (overlay) {
-                overlay.style.opacity = '1';
-            }
-            
-            console.log('✓ Theme applied:', bgUrl);
-        }
-        
-        // Apply immediately and on load
-        if (document.readyState === 'loading') {
-            document.addEventListener('DOMContentLoaded', applyTheme);
-        } else {
-            applyTheme();
-        }
-    })();
-</script>
-@endif
-
 </body>
 </html>
