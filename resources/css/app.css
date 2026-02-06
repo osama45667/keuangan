@@ -124,19 +124,11 @@ html, body {
 
 /* Background image - fixed positioned behind all content */
 #theme-bg {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 0;
-    background-image: var(--bg-image-url, none) !important;
+    /* all styles set inline via Blade - this just ensures defaults */
     background-size: cover !important;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
-    will-change: transform;
-    pointer-events: none;
 }
 
 /* Subtle overlay above background, below content */
