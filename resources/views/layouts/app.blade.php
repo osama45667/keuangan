@@ -24,7 +24,7 @@
     $overlay = $user?->theme_overlay ?? 'auto';
 @endphp
 <body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" 
-    @if($hasBg)style="background-image: url('{{ $bgUrl }}'); background-size: {{ $bgSize }}; background-position: center; background-attachment: fixed; background-repeat: no-repeat;" data-theme-bg @endif>
+@if($hasBg)style="background: none; background-image: url('{{ $bgUrl }}') !important; background-size: {{ $bgSize }}; background-position: center; background-attachment: fixed; background-repeat: no-repeat; background-color: transparent;" data-theme-bg @endif>
 
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')

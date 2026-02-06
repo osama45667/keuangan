@@ -116,13 +116,9 @@ html, body {
     transition: background 0.6s ease;
 }
 
-/* When theme uploaded - accept background-image from inline style */
+/* When theme uploaded - inline style takes full control */
 .app-body.has-bg {
     animation: none !important;
-    background-attachment: fixed !important;
-    background-size: cover !important;
-    background-position: center !important;
-    background-repeat: no-repeat !important;
 }
 
 /* ============================================================================ */
