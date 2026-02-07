@@ -120,16 +120,20 @@ html, body {
 /* When theme uploaded - remove default gradient animation */
 .app-body.has-bg {
     animation: none !important;
+    background: transparent !important;
 }
 
 /* Background image - fixed positioned behind all content */
 #theme-bg {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     /* Fallback color when image doesn't cover (contain mode) - match dark header */
     background-color: #0f172a;
-    z-index: -10 !important;
 }
 
 @media (max-width: 991.98px) {
@@ -479,6 +483,11 @@ html, body {
     .offcanvas {
         z-index: 1050 !important;
         background: linear-gradient(180deg, var(--brand-ink) 0%, #111827 100%) !important;
+    }
+
+    .offcanvas.show {
+        transform: translateX(0) !important;
+        visibility: visible !important;
     }
     
     /* Offcanvas backdrop */

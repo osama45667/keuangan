@@ -33,36 +33,36 @@ document.addEventListener('DOMContentLoaded', function() {
     const overlaySelect = document.getElementById('theme_overlay');
     const sizeSelect = document.getElementById('theme_bg_size');
     const themeRemove = document.getElementById('theme_remove');
+    const themeBg = document.getElementById('theme-bg');
     
     // Form handling
     const profileForm = document.querySelector('form[action*="profile.update"]');
     const saveBtn = profileForm ? profileForm.querySelector('.save-btn') : null;
 
-    // Only proceed if upload card exists
-    if (!uploadCard || !fileInput) return;
+    if (uploadCard && fileInput) {
+        // Click to upload
+        uploadCard.addEventListener('click', () => fileInput.click());
 
-    // Click to upload
-    uploadCard.addEventListener('click', () => fileInput.click());
+        // File input change
+        fileInput.addEventListener('change', handleFileSelect);
 
-    // File input change
-    fileInput.addEventListener('change', handleFileSelect);
+        // Drag and drop
+        uploadCard.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            uploadCard.classList.add('drag-over');
+        });
 
-    // Drag and drop
-    uploadCard.addEventListener('dragover', (e) => {
-        e.preventDefault();
-        uploadCard.classList.add('drag-over');
-    });
+        uploadCard.addEventListener('dragleave', () => {
+            uploadCard.classList.remove('drag-over');
+        });
 
-    uploadCard.addEventListener('dragleave', () => {
-        uploadCard.classList.remove('drag-over');
-    });
-
-    uploadCard.addEventListener('drop', (e) => {
-        e.preventDefault();
-        uploadCard.classList.remove('drag-over');
-        fileInput.files = e.dataTransfer.files;
-        handleFileSelect();
-    });
+        uploadCard.addEventListener('drop', (e) => {
+            e.preventDefault();
+            uploadCard.classList.remove('drag-over');
+            fileInput.files = e.dataTransfer.files;
+            handleFileSelect();
+        });
+    }
 
     function handleFileSelect() {
         const file = fileInput.files[0];
@@ -91,14 +91,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (previewContainer) previewContainer.style.display = 'block';
             // Apply preview immediately to page background so user sees change before saving
             try {
-                var bodyEl = document.body;
-                if (bodyEl) {
+                var bgEl = themeBg || document.body;
+                if (bgEl) {
                     var selectedSize = (sizeSelect && sizeSelect.value) ? sizeSelect.value : 'cover';
-                    bodyEl.style.backgroundImage = 'url(\"' + e.target.result + '\")';
-                    bodyEl.style.backgroundSize = selectedSize;
-                    bodyEl.style.backgroundRepeat = 'no-repeat';
-                    bodyEl.style.backgroundPosition = 'center';
-                    bodyEl.style.backgroundAttachment = 'fixed';
+                    bgEl.style.backgroundImage = 'url(\"' + e.target.result + '\")';
+                    bgEl.style.backgroundSize = selectedSize;
+                    bgEl.style.backgroundRepeat = 'no-repeat';
+                    bgEl.style.backgroundPosition = 'center';
+                    bgEl.style.backgroundAttachment = 'fixed';
                 }
             } catch (err) {
                 // ignore preview application errors
@@ -110,9 +110,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for size mode changes and update background immediately
     if (sizeSelect) {
         sizeSelect.addEventListener('change', function() {
-            var bodyEl = document.body;
-            if (bodyEl) {
-                bodyEl.style.backgroundSize = this.value;
+            var bgEl = themeBg || document.body;
+            if (bgEl) {
+                bgEl.style.backgroundSize = this.value;
                 console.log('[Theme] Size mode changed to: ' + this.value);
             }
         });

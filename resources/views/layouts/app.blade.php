@@ -13,9 +13,13 @@
     $bgUrl = null;
     $hasBg = false;
     
-    if ($user && $user->theme_bg_path) {
+    $themePath = $user?->theme_bg_path ?? request()->cookie('theme_bg_path');
+    $bgSize = $user?->theme_bg_size ?? request()->cookie('theme_bg_size') ?? 'cover';
+    $overlay = $user?->theme_overlay ?? request()->cookie('theme_overlay') ?? 'auto';
+
+    if ($themePath) {
         // Use public disk URL so uploaded backgrounds resolve correctly
-        $bgUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($user->theme_bg_path);
+        $bgUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($themePath);
         // Append timestamp from cookie or session to bust cache when user updates background
         // Cookie persists across page navigations so background updates on all pages
         $bgTs = request()->cookie('bg_ts') ?? session('bg_ts');
@@ -25,14 +29,16 @@
         $hasBg = true;
     }
     
-    $bgSize = $user?->theme_bg_size ?? 'cover';
-    $overlay = $user?->theme_overlay ?? 'auto';
     // Overlay handled in CSS via .app-body.has-bg::before
-    $bgStyle = $hasBg
-        ? "background-image: url('{$bgUrl}'); background-size: {$bgSize}; background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-color: #0f172a;"
-        : '';
 @endphp
-<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" @if($hasBg) style="{{ $bgStyle }}" @endif>
+<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif">
+    @if($hasBg)
+        <div
+            id="theme-bg"
+            aria-hidden="true"
+            style="background-image: url('{{ e($bgUrl) }}'); background-size: {{ $bgSize }};"
+        ></div>
+    @endif
 
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
