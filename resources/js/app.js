@@ -91,11 +91,14 @@ document.addEventListener('DOMContentLoaded', function() {
             if (previewContainer) previewContainer.style.display = 'block';
             // Apply preview immediately to page background so user sees change before saving
             try {
-                var themeBgEl = document.getElementById('theme-bg');
-                if (themeBgEl) {
-                    themeBgEl.style.backgroundImage = 'url("' + e.target.result + '")';
+                var bodyEl = document.body;
+                if (bodyEl) {
                     var selectedSize = (sizeSelect && sizeSelect.value) ? sizeSelect.value : 'cover';
-                    themeBgEl.style.backgroundSize = selectedSize;
+                    bodyEl.style.backgroundImage = 'url(\"' + e.target.result + '\")';
+                    bodyEl.style.backgroundSize = selectedSize;
+                    bodyEl.style.backgroundRepeat = 'no-repeat';
+                    bodyEl.style.backgroundPosition = 'center';
+                    bodyEl.style.backgroundAttachment = 'fixed';
                 }
             } catch (err) {
                 // ignore preview application errors
@@ -107,9 +110,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for size mode changes and update background immediately
     if (sizeSelect) {
         sizeSelect.addEventListener('change', function() {
-            var themeBgEl = document.getElementById('theme-bg');
-            if (themeBgEl) {
-                themeBgEl.style.backgroundSize = this.value;
+            var bodyEl = document.body;
+            if (bodyEl) {
+                bodyEl.style.backgroundSize = this.value;
                 console.log('[Theme] Size mode changed to: ' + this.value);
             }
         });
