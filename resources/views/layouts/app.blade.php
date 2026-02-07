@@ -27,30 +27,12 @@
     
     $bgSize = $user?->theme_bg_size ?? 'cover';
     $overlay = $user?->theme_overlay ?? 'auto';
-    $overlayCss = match ($overlay) {
-        'light' => 'linear-gradient(180deg, rgba(255,255,255,0.45), rgba(248,250,252,0.70))',
-        'dark'  => 'linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.55))',
-        default => 'linear-gradient(180deg, rgba(0,0,0,0.18), rgba(0,0,0,0.35))',
-    };
+    // Overlay handled in CSS via .app-body.has-bg::before
     $bgStyle = $hasBg
-        ? [
-            "background-image: {$overlayCss}, url('{$bgUrl}') !important",
-            "background-size: {$bgSize} !important",
-            "background-repeat: no-repeat !important",
-            "background-position: center !important",
-            "background-attachment: fixed !important",
-            "background-color: transparent !important",
-        ]
-        : [];
+        ? "background-image: url('{$bgUrl}'); background-size: {$bgSize}; background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-color: #0f172a;"
+        : '';
 @endphp
-@if($hasBg)
-    <style>
-        .app-body.has-bg {
-            {!! implode('; ', $bgStyle) !!};
-        }
-    </style>
-@endif
-<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif">
+<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" @if($hasBg) style="{{ $bgStyle }}" @endif>
 
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')

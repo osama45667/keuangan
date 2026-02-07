@@ -28,6 +28,7 @@ html, body {
     margin: 0;
     padding: 0;
     font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: clamp(14px, 1.1vw + 10px, 16px);
 }
 
 /* ============================================================================ */
@@ -119,18 +120,23 @@ html, body {
 /* When theme uploaded - remove default gradient animation */
 .app-body.has-bg {
     animation: none !important;
-    background: none !important;
+    background: transparent !important;
 }
 
 /* Background image - fixed positioned behind all content */
 #theme-bg {
-    background-size: cover !important;
-    background-position: top center !important;
+    background-position: center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
     /* Fallback color when image doesn't cover (contain mode) - match dark header */
     background-color: #0f172a;
     z-index: -10 !important;
+}
+
+@media (max-width: 991.98px) {
+    #theme-bg {
+        background-attachment: scroll !important;
+    }
 }
 
 /* Subtle overlay above background, below content - much lighter for clarity */
@@ -218,8 +224,8 @@ html, body {
 }
 
 .app-body.has-bg .app-main {
-    background: rgba(255, 255, 255, 0.50) !important;
-    backdrop-filter: blur(4px);
+    background: rgba(255, 255, 255, 0.35) !important;
+    backdrop-filter: blur(3px);
 }
 
 /* ============================================================================ */
@@ -490,6 +496,12 @@ html, body {
     /* Reduce heading sizes on mobile */
     h1, h2, h3, h4, h5, h6 {
         font-size: 0.95em;
+    }
+
+    .app-navbar .navbar-brand {
+        font-size: 1rem;
+        line-height: 1.2;
+        white-space: normal;
     }
     
     /* Make buttons full width on mobile when needed */

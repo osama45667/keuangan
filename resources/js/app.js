@@ -8,6 +8,21 @@ Alpine.start();
 
 // Theme Settings Functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Ensure mobile sidebar toggle works even if Bootstrap JS isn't available
+    const sidebarToggle = document.querySelector('[data-bs-toggle="offcanvas"][data-bs-target="#appSidebar"]');
+    const sidebarEl = document.getElementById('appSidebar');
+    if (sidebarToggle && sidebarEl) {
+        sidebarToggle.addEventListener('click', function (e) {
+            // If Bootstrap is loaded, let it handle the offcanvas
+            if (window.bootstrap && window.bootstrap.Offcanvas) {
+                return;
+            }
+            e.preventDefault();
+            sidebarEl.classList.toggle('show');
+            sidebarEl.style.visibility = sidebarEl.classList.contains('show') ? 'visible' : 'hidden';
+        });
+    }
+
     // Safe element selection with null checks
     const fileInput = document.getElementById('theme_file');
     const uploadCard = document.getElementById('upload_card'); // Changed from class to ID
