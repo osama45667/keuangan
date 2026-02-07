@@ -9,23 +9,23 @@
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
-        <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
+        <link href="https://fonts.bunny.net/css?family=manrope:400,500,600,700&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <style>
             :root { color-scheme: light; }
             body { margin: 0; }
-            .app-body { font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #0f172a; }
-            .auth-shell { min-height: 100vh; display: grid; place-items: center; padding: 40px 20px; background: radial-gradient(900px 600px at 10% -10%, rgba(14, 165, 233, 0.25), transparent 60%), radial-gradient(800px 500px at 100% 20%, rgba(244, 63, 94, 0.25), transparent 55%), #0f172a; }
+            .app-body { font-family: "Manrope", "Segoe UI", Tahoma, Geneva, Verdana, sans-serif; background: #0f172a; color: #0f172a; }
+            .auth-shell { min-height: 100vh; display: grid; place-items: center; padding: 40px 20px; background: radial-gradient(900px 600px at 10% -10%, rgba(14, 165, 233, 0.25), transparent 60%), radial-gradient(800px 500px at 100% 20%, rgba(244, 63, 94, 0.25), transparent 55%), #0f172a; position: relative; z-index: 2; }
             .app-body.has-bg .auth-shell { background: transparent; }
             .auth-grid { width: min(980px, 100%); display: grid; gap: 28px; grid-template-columns: 1.2fr 1fr; align-items: stretch; }
-            .auth-panel { color: #e2e8f0; padding: 8px 8px 8px 16px; }
+            .auth-panel { color: #e2e8f0; padding: 8px 8px 8px 16px; animation: fadeIn 0.6s ease-out; }
             .auth-brand { display: flex; gap: 14px; align-items: center; }
             .auth-logo { width: 44px; height: 44px; }
             .auth-title { font-size: 20px; font-weight: 700; }
             .auth-sub { margin-top: 12px; color: rgba(226, 232, 240, 0.8); line-height: 1.5; }
-            .auth-card { background: rgba(255, 255, 255, 0.98); border-radius: 18px; padding: 28px; box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35); border: 1px solid rgba(148, 163, 184, 0.35); }
+            .auth-card { background: rgba(255, 255, 255, 0.98); border-radius: 18px; padding: 28px; box-shadow: 0 25px 60px rgba(15, 23, 42, 0.35); border: 1px solid rgba(148, 163, 184, 0.35); animation: fadeInUp 0.6s ease-out; }
             .auth-card h1 { margin: 0; font-size: 22px; }
             .auth-card p { margin: 6px 0 0; color: #64748b; }
             .auth-card label { font-size: 14px; color: #475569; }
@@ -66,7 +66,10 @@
             default => 'linear-gradient(180deg, rgba(2,6,23,0.35), rgba(2,6,23,0.55))',
         };
     @endphp
-    <body class="app-body {{ $bgUrl ? 'has-bg '.$overlayClass : '' }}" @if($bgUrl) style="--app-bg-url: url('{{ $bgUrl }}'); --app-bg-size: {{ $bgSize }}; --app-bg-overlay: {{ $overlayCss }};" @endif>
+    <body class="app-body {{ $bgUrl ? 'has-bg '.$overlayClass : '' }}" @if($bgUrl) style="--theme-bg-url: url('{{ $bgUrl }}'); --theme-bg-size: {{ $bgSize }};" @endif>
+        @if($bgUrl)
+            <div id="theme-bg" aria-hidden="true"></div>
+        @endif
         <div class="auth-shell">
             <div class="auth-grid">
                 <div class="auth-panel">

@@ -8,18 +8,50 @@ Alpine.start();
 
 // Theme Settings Functionality
 document.addEventListener('DOMContentLoaded', function() {
+    // Refresh cached pages to avoid stale CSRF tokens on mobile back/forward cache
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
     // Ensure mobile sidebar toggle works even if Bootstrap JS isn't available
     const sidebarToggle = document.querySelector('[data-bs-toggle="offcanvas"][data-bs-target="#appSidebar"]');
     const sidebarEl = document.getElementById('appSidebar');
     if (sidebarToggle && sidebarEl) {
+        const toggleSidebar = (force) => {
+            const shouldOpen = typeof force === 'boolean' ? force : !sidebarEl.classList.contains('show');
+            sidebarEl.classList.toggle('show', shouldOpen);
+            sidebarEl.style.visibility = shouldOpen ? 'visible' : 'hidden';
+            document.body.classList.toggle('sidebar-open', shouldOpen);
+        };
+
         sidebarToggle.addEventListener('click', function (e) {
-            // If Bootstrap is loaded, let it handle the offcanvas
+            // If Bootstrap is loaded, let it try first, then fallback if it fails
             if (window.bootstrap && window.bootstrap.Offcanvas) {
+                setTimeout(() => {
+                    if (!sidebarEl.classList.contains('show')) {
+                        toggleSidebar(true);
+                    }
+                }, 150);
                 return;
             }
             e.preventDefault();
-            sidebarEl.classList.toggle('show');
-            sidebarEl.style.visibility = sidebarEl.classList.contains('show') ? 'visible' : 'hidden';
+            toggleSidebar();
+        });
+
+        // Close on link click
+        sidebarEl.addEventListener('click', (e) => {
+            if (e.target && e.target.closest('a')) {
+                toggleSidebar(false);
+            }
+        });
+
+        // Click outside to close
+        document.addEventListener('click', (e) => {
+            if (!document.body.classList.contains('sidebar-open')) return;
+            if (sidebarEl.contains(e.target) || sidebarToggle.contains(e.target)) return;
+            toggleSidebar(false);
         });
     }
 
@@ -92,14 +124,16 @@ document.addEventListener('DOMContentLoaded', function() {
             // Apply preview immediately to page background so user sees change before saving
             try {
                 var bgEl = themeBg || document.body;
+                var selectedSize = (sizeSelect && sizeSelect.value) ? sizeSelect.value : 'cover';
                 if (bgEl) {
-                    var selectedSize = (sizeSelect && sizeSelect.value) ? sizeSelect.value : 'cover';
                     bgEl.style.backgroundImage = 'url(\"' + e.target.result + '\")';
                     bgEl.style.backgroundSize = selectedSize;
                     bgEl.style.backgroundRepeat = 'no-repeat';
                     bgEl.style.backgroundPosition = 'center';
                     bgEl.style.backgroundAttachment = 'fixed';
                 }
+                document.body.style.setProperty('--theme-bg-url', 'url(\"' + e.target.result + '\")');
+                document.body.style.setProperty('--theme-bg-size', selectedSize);
             } catch (err) {
                 // ignore preview application errors
             }
@@ -115,6 +149,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 bgEl.style.backgroundSize = this.value;
                 console.log('[Theme] Size mode changed to: ' + this.value);
             }
+            document.body.style.setProperty('--theme-bg-size', this.value);
         });
     }
 

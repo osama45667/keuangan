@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield('title','Sistem Laporan Keuangan')</title>
+    <link rel="preconnect" href="https://fonts.bunny.net">
+    <link href="https://fonts.bunny.net/css?family=manrope:400,500,600,700&display=swap" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     @vite(['resources/css/app.css','resources/js/app.js'])
 </head>
@@ -29,17 +31,16 @@
         $hasBg = true;
     }
     
-    // Overlay handled in CSS via .app-body.has-bg::before
-    $bgStyle = $hasBg
-        ? "background-image: url('{$bgUrl}'); background-size: {$bgSize}; background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-color: #0f172a;"
+    // Pass background info via CSS variables to avoid inline background conflicts
+    $bgVars = $hasBg
+        ? "--theme-bg-url: url('{$bgUrl}'); --theme-bg-size: {$bgSize};"
         : '';
 @endphp
-<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" @if($hasBg) style="{{ $bgStyle }}" @endif>
+<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" @if($hasBg) style="{{ $bgVars }}" @endif>
     @if($hasBg)
         <div
             id="theme-bg"
             aria-hidden="true"
-            style="background-image: url('{{ e($bgUrl) }}'); background-size: {{ $bgSize }};"
         ></div>
     @endif
 

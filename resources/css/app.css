@@ -27,8 +27,10 @@ html, body {
     height: 100%;
     margin: 0;
     padding: 0;
-    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
-    font-size: clamp(14px, 1.1vw + 10px, 16px);
+    font-family: "Manrope", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: clamp(14px, 0.9vw + 11px, 17px);
+    line-height: 1.5;
+    overflow-x: hidden;
 }
 
 /* ============================================================================ */
@@ -105,12 +107,13 @@ html, body {
 /* ============================================================================ */
 
 .app-body {
-    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
+    font-family: "Manrope", "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     position: relative;
     z-index: 0;
+    color: #0f172a;
     background: linear-gradient(135deg, #f3f4f6 0%, #ffffff 50%, #f0f9ff 100%);
     background-size: 200% 200%;
     animation: gradientShift 15s ease infinite;
@@ -121,6 +124,11 @@ html, body {
 .app-body.has-bg {
     animation: none !important;
     background: transparent !important;
+    --panel-bg: rgba(255, 255, 255, 0.88);
+    --panel-border: rgba(226, 232, 240, 0.7);
+    --panel-shadow: 0 14px 32px rgba(2, 6, 23, 0.18);
+    --panel-text: #0f172a;
+    --panel-muted: #475569;
 }
 
 /* Background image - fixed positioned behind all content */
@@ -129,6 +137,8 @@ html, body {
     inset: 0;
     z-index: 0;
     pointer-events: none;
+    background-image: var(--theme-bg-url);
+    background-size: var(--theme-bg-size, cover);
     background-position: center !important;
     background-repeat: no-repeat !important;
     background-attachment: fixed !important;
@@ -147,25 +157,33 @@ html, body {
     content: '';
     position: fixed;
     inset: 0;
-    background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(248,250,252,0.30));
+    background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(248,250,252,0.28));
     z-index: 1;
     pointer-events: none;
     transition: background 0.3s ease;
 }
 
 .app-body.has-bg.theme-overlay-dark::before {
-    background: linear-gradient(180deg, rgba(0,0,0,0.20), rgba(0,0,0,0.35));
+    background: linear-gradient(180deg, rgba(2,6,23,0.22), rgba(2,6,23,0.45));
     z-index: 1;
 }
 
 .app-body.has-bg.theme-overlay-light::before {
-    background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(248,250,252,0.30));
+    background: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(248,250,252,0.28));
     z-index: 1;
 }
 
 /* Ensure content floats above background */
 .app-shell { z-index: 10; position: relative; }
 .app-main { z-index: 10; position: relative; }
+
+.app-body.sidebar-open::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: rgba(2, 6, 23, 0.45);
+    z-index: 900;
+}
 
 /* Professional layout tweaks */
 .app-main .profile-section {
@@ -226,9 +244,15 @@ html, body {
     animation: fadeInUp 0.6s ease-out;
 }
 
+.app-main.container-fluid {
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
 .app-body.has-bg .app-main {
     background: transparent !important;
     backdrop-filter: none;
+    color: var(--panel-text);
 }
 
 .app-body.has-bg .app-shell {
@@ -247,6 +271,10 @@ html, body {
     width: 240px;
     animation: slideInLeft 0.6s ease-out;
     overflow-y: auto;
+}
+
+#appSidebar {
+    z-index: 1000;
 }
 
 .app-sidebar .nav-link {
@@ -284,6 +312,12 @@ html, body {
     min-height: 60px;
     display: flex;
     align-items: center;
+}
+
+.app-navbar .navbar-brand {
+    font-size: clamp(1rem, 0.7vw + 0.9rem, 1.35rem);
+    font-weight: 700;
+    letter-spacing: 0.2px;
 }
 
 .app-body.has-bg .app-navbar {
@@ -402,6 +436,26 @@ html, body {
     letter-spacing: 0.5px;
 }
 
+h1 { font-size: clamp(1.6rem, 1.2vw + 1.2rem, 2.2rem); }
+h2 { font-size: clamp(1.35rem, 1vw + 1rem, 1.8rem); }
+h3 { font-size: clamp(1.15rem, 0.8vw + 0.9rem, 1.4rem); }
+h4, h5, h6 { font-size: clamp(1rem, 0.6vw + 0.85rem, 1.2rem); }
+
+.table {
+    color: inherit;
+}
+
+.table thead th {
+    background: rgba(241, 245, 249, 0.9);
+    border-bottom: 1px solid rgba(226, 232, 240, 0.8);
+    color: inherit;
+}
+
+.table-responsive {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 /* ============================================================================ */
 /* ALERTS & MESSAGES */
 /* ============================================================================ */
@@ -443,6 +497,51 @@ html, body {
 
 .app-body.has-bg .card {
     animation: scaleIn 0.5s ease-out;
+}
+
+/* Elevate content surfaces when a theme background is active */
+.app-body.has-bg .card,
+.app-body.has-bg .table,
+.app-body.has-bg .profile-section,
+.app-body.has-bg .upload-card,
+.app-body.has-bg .auth-card,
+.app-body.has-bg .modal-content {
+    background: var(--panel-bg) !important;
+    color: var(--panel-text);
+    border: 1px solid var(--panel-border);
+    box-shadow: var(--panel-shadow);
+    backdrop-filter: blur(10px);
+}
+
+.app-body.has-bg .theme-settings,
+.app-body.has-bg .form-check {
+    background: var(--panel-bg) !important;
+    color: var(--panel-text);
+    border-color: var(--panel-border) !important;
+    backdrop-filter: blur(10px);
+}
+
+.app-body.has-bg.theme-overlay-dark .theme-settings,
+.app-body.has-bg.theme-overlay-dark .form-check {
+    background: rgba(15, 23, 42, 0.78) !important;
+}
+
+.app-body.has-bg.theme-overlay-dark {
+    --panel-bg: rgba(15, 23, 42, 0.75);
+    --panel-border: rgba(148, 163, 184, 0.35);
+    --panel-shadow: 0 18px 40px rgba(2, 6, 23, 0.45);
+    --panel-text: #e2e8f0;
+    --panel-muted: #cbd5f5;
+}
+
+.app-body.has-bg.theme-overlay-dark .table thead th {
+    background: rgba(15, 23, 42, 0.9);
+    border-bottom-color: rgba(148, 163, 184, 0.35);
+}
+
+.app-body.has-bg .text-muted,
+.app-body.has-bg .form-text {
+    color: var(--panel-muted) !important;
 }
 
 /* ============================================================================ */
@@ -510,6 +609,10 @@ html, body {
         font-size: 0.95em;
     }
 
+    .table {
+        font-size: 0.85rem;
+    }
+
     .app-navbar .navbar-brand {
         font-size: 1rem;
         line-height: 1.2;
@@ -519,6 +622,14 @@ html, body {
     /* Make buttons full width on mobile when needed */
     .btn-block, .btn-full {
         width: 100%;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
     }
 }
 
