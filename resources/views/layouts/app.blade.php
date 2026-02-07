@@ -18,8 +18,8 @@
     $overlay = $user?->theme_overlay ?? request()->cookie('theme_overlay') ?? 'auto';
 
     if ($themePath) {
-        // Use public disk URL so uploaded backgrounds resolve correctly
-        $bgUrl = \Illuminate\Support\Facades\Storage::disk('public')->url($themePath);
+        // Use dedicated endpoint so background works even if /storage is not exposed
+        $bgUrl = route('api.user.background-image');
         // Append timestamp from cookie or session to bust cache when user updates background
         // Cookie persists across page navigations so background updates on all pages
         $bgTs = request()->cookie('bg_ts') ?? session('bg_ts');
