@@ -65,7 +65,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const overlaySelect = document.getElementById('theme_overlay');
     const sizeSelect = document.getElementById('theme_bg_size');
     const themeRemove = document.getElementById('theme_remove');
-    const themeBg = document.getElementById('theme-bg');
+    const themeBg = null;
     
     // Form handling
     const profileForm = document.querySelector('form[action*="profile.update"]');
@@ -123,15 +123,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (previewContainer) previewContainer.style.display = 'block';
             // Apply preview immediately to page background so user sees change before saving
             try {
-                var bgEl = themeBg || document.body;
                 var selectedSize = (sizeSelect && sizeSelect.value) ? sizeSelect.value : 'cover';
-                if (bgEl) {
-                    bgEl.style.backgroundImage = 'url(\"' + e.target.result + '\")';
-                    bgEl.style.backgroundSize = selectedSize;
-                    bgEl.style.backgroundRepeat = 'no-repeat';
-                    bgEl.style.backgroundPosition = 'center';
-                    bgEl.style.backgroundAttachment = 'fixed';
-                }
                 document.body.style.setProperty('--theme-bg-url', 'url(\"' + e.target.result + '\")');
                 document.body.style.setProperty('--theme-bg-size', selectedSize);
             } catch (err) {
@@ -144,12 +136,8 @@ document.addEventListener('DOMContentLoaded', function() {
     // Listen for size mode changes and update background immediately
     if (sizeSelect) {
         sizeSelect.addEventListener('change', function() {
-            var bgEl = themeBg || document.body;
-            if (bgEl) {
-                bgEl.style.backgroundSize = this.value;
-                console.log('[Theme] Size mode changed to: ' + this.value);
-            }
             document.body.style.setProperty('--theme-bg-size', this.value);
+            console.log('[Theme] Size mode changed to: ' + this.value);
         });
     }
 

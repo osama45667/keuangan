@@ -37,12 +37,6 @@
         : '';
 @endphp
 <body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" @if($hasBg) style="{{ $bgVars }}" @endif>
-    @if($hasBg)
-        <div
-            id="theme-bg"
-            aria-hidden="true"
-        ></div>
-    @endif
 
 <div class="d-flex app-shell" style="min-height:100vh;">
     @include('partials.sidebar')
