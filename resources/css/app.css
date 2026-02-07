@@ -147,7 +147,7 @@ html, body {
     content: '';
     position: fixed;
     inset: 0;
-    background: linear-gradient(180deg, rgba(0,0,0,0.05), rgba(0,0,0,0.12));
+    background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(248,250,252,0.30));
     z-index: 1;
     pointer-events: none;
     transition: background 0.3s ease;

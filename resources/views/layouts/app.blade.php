@@ -30,8 +30,11 @@
     }
     
     // Overlay handled in CSS via .app-body.has-bg::before
+    $bgStyle = $hasBg
+        ? "background-image: url('{$bgUrl}'); background-size: {$bgSize}; background-repeat: no-repeat; background-position: center; background-attachment: fixed; background-color: #0f172a;"
+        : '';
 @endphp
-<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif">
+<body class="app-body @if($hasBg)has-bg theme-overlay-{{ $overlay }}@endif" @if($hasBg) style="{{ $bgStyle }}" @endif>
     @if($hasBg)
         <div
             id="theme-bg"
