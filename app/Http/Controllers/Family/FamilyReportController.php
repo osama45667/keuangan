@@ -123,6 +123,24 @@ class FamilyReportController extends Controller
                 + ($expenseDetailByMember['Umum'] ?? collect())->sum('amount'),
         ];
 
+        $incomeDetailByMember = FamilyTransaction::with('category')
+            ->whereBetween('tanggal', [$start, $end])
+            ->where('type', 'income')
+            ->orderBy('member_name')
+            ->orderBy('tanggal')
+            ->get()
+            ->groupBy(function ($row) {
+                return $row->member_name ?: 'Umum';
+            });
+
+        $incomeTotalsByMember = [
+            'Ayah' => ($incomeDetailByMember['Ayah'] ?? collect())->sum('amount'),
+            'Ibu' => ($incomeDetailByMember['Ibu'] ?? collect())->sum('amount'),
+            'Umum' => ($incomeDetailByMember['Ayah'] ?? collect())->sum('amount')
+                + ($incomeDetailByMember['Ibu'] ?? collect())->sum('amount')
+                + ($incomeDetailByMember['Umum'] ?? collect())->sum('amount'),
+        ];
+
         return view('family.reports.summary', compact(
             'start',
             'end',
@@ -137,7 +155,9 @@ class FamilyReportController extends Controller
             'incomeData',
             'expenseData',
             'expenseDetailByMember',
-            'expenseTotalsByMember'
+            'expenseTotalsByMember',
+            'incomeDetailByMember',
+            'incomeTotalsByMember'
         ));
     }
 
