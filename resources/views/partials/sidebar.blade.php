@@ -16,11 +16,11 @@
     </div>
     <div class="offcanvas-body p-0">
         <ul class="nav flex-column p-3">
-            <li class="nav-item"><a class="nav-link text-white" data-bs-dismiss="offcanvas" href="{{ route('dashboard') }}">Dashboard</a></li>
-            <li class="nav-item"><a class="nav-link text-white" data-bs-dismiss="offcanvas" href="{{ route('family.transactions.index') }}">Transaksi Keluarga</a></li>
-            <li class="nav-item"><a class="nav-link text-white" data-bs-dismiss="offcanvas" href="{{ route('family.categories.index') }}">Kategori Keluarga</a></li>
-            <li class="nav-item"><a class="nav-link text-white" data-bs-dismiss="offcanvas" href="{{ route('family.reports.summary') }}">Laporan Keluarga</a></li>
-            <li class="nav-item"><a class="nav-link text-white" data-bs-dismiss="offcanvas" href="{{ route('profile.edit') }}">Profil</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{{ route('dashboard') }}">Dashboard</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{{ route('family.transactions.index') }}">Transaksi Keluarga</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{{ route('family.categories.index') }}">Kategori Keluarga</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{{ route('family.reports.summary') }}">Laporan Keluarga</a></li>
+            <li class="nav-item"><a class="nav-link text-white" href="{{ route('profile.edit') }}">Profil</a></li>
         </ul>
     </div>
 </div>
