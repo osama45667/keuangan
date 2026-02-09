@@ -15,8 +15,8 @@
     --brand-purple: #00c2b3;
     --brand-cyan: #2ee6ff;
     --brand-sky: #9be2ff;
-    --brand-red: #ef4444;
-    --brand-red-dark: #991b1b;
+    --brand-red: #ff4d5e;
+    --brand-red-dark: #b91c1c;
     --brand-ink: #0a1433;
     --brand-mist: #f5f9ff;
     --brand-gray: #6b7280;
@@ -469,9 +469,9 @@ h4, h5, h6 { font-size: clamp(1rem, 0.6vw + 0.85rem, 1.2rem); }
 }
 
 .alert-danger {
-    background: linear-gradient(135deg, #fee2e2 0%, #fecaca 100%);
+    background: linear-gradient(135deg, #ffe4e9 0%, #ffc7d1 100%);
     color: var(--brand-red-dark);
-    box-shadow: 0 4px 12px rgba(153, 27, 27, 0.15);
+    box-shadow: 0 6px 16px rgba(255, 77, 94, 0.2);
 }
 
 /* ============================================================================ */
