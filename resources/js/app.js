@@ -15,10 +15,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 
-    // Ensure mobile sidebar toggle works even if Bootstrap JS isn't available
+    // Mobile sidebar: use Bootstrap offcanvas when available, fallback otherwise
     const sidebarToggle = document.querySelector('[data-bs-toggle="offcanvas"][data-bs-target="#appSidebar"]');
     const sidebarEl = document.getElementById('appSidebar');
     if (sidebarToggle && sidebarEl) {
+        const hasBootstrap = !!(window.bootstrap && window.bootstrap.Offcanvas);
+        const bsInstance = hasBootstrap ? window.bootstrap.Offcanvas.getOrCreateInstance(sidebarEl) : null;
+
         const toggleSidebar = (force) => {
             const shouldOpen = typeof force === 'boolean' ? force : !sidebarEl.classList.contains('show');
             sidebarEl.classList.toggle('show', shouldOpen);
@@ -26,14 +29,18 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.toggle('sidebar-open', shouldOpen);
         };
 
+        if (hasBootstrap) {
+            sidebarEl.addEventListener('shown.bs.offcanvas', () => {
+                document.body.classList.add('sidebar-open');
+            });
+            sidebarEl.addEventListener('hidden.bs.offcanvas', () => {
+                document.body.classList.remove('sidebar-open');
+            });
+        }
+
         sidebarToggle.addEventListener('click', function (e) {
-            // If Bootstrap is loaded, let it try first, then fallback if it fails
-            if (window.bootstrap && window.bootstrap.Offcanvas) {
-                setTimeout(() => {
-                    if (!sidebarEl.classList.contains('show')) {
-                        toggleSidebar(true);
-                    }
-                }, 150);
+            if (hasBootstrap && bsInstance) {
+                bsInstance.toggle();
                 return;
             }
             e.preventDefault();
@@ -43,12 +50,17 @@ document.addEventListener('DOMContentLoaded', function() {
         // Close on link click
         sidebarEl.addEventListener('click', (e) => {
             if (e.target && e.target.closest('a')) {
-                toggleSidebar(false);
+                if (hasBootstrap && bsInstance) {
+                    bsInstance.hide();
+                } else {
+                    toggleSidebar(false);
+                }
             }
         });
 
-        // Click outside to close
+        // Click outside to close (fallback only)
         document.addEventListener('click', (e) => {
+            if (hasBootstrap) return;
             if (!document.body.classList.contains('sidebar-open')) return;
             if (sidebarEl.contains(e.target) || sidebarToggle.contains(e.target)) return;
             toggleSidebar(false);

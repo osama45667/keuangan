@@ -149,12 +149,16 @@ html, body {
 .app-shell { z-index: 10; position: relative; }
 .app-main { z-index: 10; position: relative; }
 
-.app-body.sidebar-open::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: rgba(2, 6, 23, 0.45);
-    z-index: 900;
+.app-body.sidebar-open {
+    overflow: hidden;
+}
+
+.app-body.sidebar-open .app-shell > .flex-grow-1 {
+    pointer-events: none;
+}
+
+.app-body.sidebar-open .offcanvas.app-sidebar {
+    pointer-events: auto;
 }
 
 /* Professional layout tweaks */
