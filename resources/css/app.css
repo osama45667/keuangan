@@ -129,7 +129,7 @@ html, body {
 .app-body.has-bg {
     animation: none !important;
     background-color: #0b1230;
-    background-image: var(--theme-overlay, linear-gradient(180deg, rgba(255,255,255,0.12), rgba(248,250,252,0.28))), var(--theme-bg-url);
+    background-image: var(--theme-overlay, linear-gradient(180deg, rgba(255,255,255,0.25), rgba(248,250,252,0.45))), var(--theme-bg-url);
     background-size: 100% 100%, var(--theme-bg-size, cover);
     background-repeat: no-repeat;
     background-position: center top;
@@ -143,11 +143,11 @@ html, body {
 
 /* Overlay presets for theme background */
 .app-body.has-bg.theme-overlay-dark {
-    --theme-overlay: linear-gradient(180deg, rgba(2,6,23,0.22), rgba(2,6,23,0.45));
+    --theme-overlay: linear-gradient(180deg, rgba(2,6,23,0.15), rgba(2,6,23,0.32));
 }
 
 .app-body.has-bg.theme-overlay-light {
-    --theme-overlay: linear-gradient(180deg, rgba(255,255,255,0.12), rgba(248,250,252,0.28));
+    --theme-overlay: linear-gradient(180deg, rgba(255,255,255,0.32), rgba(248,250,252,0.55));
 }
 
 /* Ensure content floats above background */
