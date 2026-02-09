@@ -28,6 +28,15 @@ document.addEventListener('DOMContentLoaded', function() {
             document.body.classList.toggle('sidebar-open', shouldOpen);
         };
 
+        const shouldNavigate = (link) => {
+            if (!link) return false;
+            const href = link.getAttribute('href');
+            if (!href || href.startsWith('#')) return false;
+            if (link.target && link.target !== '_self') return false;
+            if (link.hasAttribute('download')) return false;
+            return true;
+        };
+
         if (hasBootstrap) {
             // Let Bootstrap handle toggle via data attributes to avoid double-toggle issues.
             sidebarEl.addEventListener('shown.bs.offcanvas', () => {
@@ -37,12 +46,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 document.body.classList.remove('sidebar-open');
             });
 
-            // Ensure the menu closes when a link is tapped.
+            // Ensure menu links navigate on mobile (some devices swallow clicks).
             sidebarEl.addEventListener('click', (e) => {
-                if (e.target && e.target.closest('a')) {
-                    const instance = window.bootstrap.Offcanvas.getInstance(sidebarEl);
-                    if (instance) instance.hide();
-                }
+                const link = e.target && e.target.closest('a[href]');
+                if (!shouldNavigate(link)) return;
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                const instance = window.bootstrap.Offcanvas.getInstance(sidebarEl);
+                if (instance) instance.hide();
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 60);
             });
         } else {
             // Fallback for when Bootstrap JS isn't available.
@@ -52,9 +66,14 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             sidebarEl.addEventListener('click', (e) => {
-                if (e.target && e.target.closest('a')) {
-                    toggleSidebar(false);
-                }
+                const link = e.target && e.target.closest('a[href]');
+                if (!shouldNavigate(link)) return;
+                e.preventDefault();
+                const href = link.getAttribute('href');
+                toggleSidebar(false);
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 60);
             });
 
             document.addEventListener('click', (e) => {

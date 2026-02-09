@@ -267,6 +267,7 @@ aside.app-sidebar {
     z-index: 1050;
     background: linear-gradient(180deg, #0c1f4e 0%, #0d3a8f 55%, #0f4bb8 100%) !important;
     box-shadow: 2px 0 24px rgba(2, 6, 23, 0.35);
+    pointer-events: auto;
 }
 
 #appSidebar {
@@ -279,6 +280,12 @@ aside.app-sidebar {
     color: #e5e7eb;
     transition: all var(--transition-fast);
     position: relative;
+}
+
+.offcanvas.app-sidebar .nav-link {
+    display: block;
+    width: 100%;
+    pointer-events: auto;
 }
 
 .app-sidebar .nav-link:hover {
