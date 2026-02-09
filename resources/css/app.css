@@ -9,16 +9,16 @@
 }
 
 :root {
-    --brand-blue: #0a5bff;
-    --brand-blue-light: #3bc5ff;
-    --brand-blue-lighter: #e6f4ff;
-    --brand-purple: #00b7a8;
-    --brand-cyan: #22d3ee;
-    --brand-sky: #7dd3fc;
+    --brand-blue: #1f6bff;
+    --brand-blue-light: #5bd1ff;
+    --brand-blue-lighter: #eef6ff;
+    --brand-purple: #00c2b3;
+    --brand-cyan: #2ee6ff;
+    --brand-sky: #9be2ff;
     --brand-red: #ef4444;
     --brand-red-dark: #991b1b;
-    --brand-ink: #0b1230;
-    --brand-mist: #f3f8ff;
+    --brand-ink: #0a1433;
+    --brand-mist: #f5f9ff;
     --brand-gray: #6b7280;
     --transition-fast: 0.2s ease-out;
     --transition-smooth: 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -115,11 +115,11 @@ html, body {
     min-height: 100vh;
     position: relative;
     z-index: 0;
-    color: #0b1230;
+    color: #0a1433;
     background:
-        radial-gradient(1200px 520px at 10% -10%, rgba(10, 91, 255, 0.16), transparent 60%),
-        radial-gradient(900px 520px at 110% 10%, rgba(34, 211, 238, 0.14), transparent 60%),
-        linear-gradient(180deg, #f7fbff 0%, #eef6ff 100%);
+        radial-gradient(1200px 520px at 12% -10%, rgba(31, 107, 255, 0.20), transparent 60%),
+        radial-gradient(900px 520px at 110% 12%, rgba(46, 230, 255, 0.18), transparent 60%),
+        linear-gradient(180deg, #fbfdff 0%, #edf4ff 100%);
     background-size: 180% 180%;
     animation: gradientShift 15s ease infinite;
     transition: background 0.6s ease;
@@ -252,7 +252,7 @@ html, body {
 /* ============================================================================ */
 
 aside.app-sidebar {
-    background: linear-gradient(180deg, #0b1b45 0%, #0a2f7a 45%, #0a3aa0 100%);
+    background: linear-gradient(180deg, #0c1f4e 0%, #0d3a8f 55%, #0f4bb8 100%);
     box-shadow: 2px 0 24px rgba(2, 6, 23, 0.35);
     position: relative;
     z-index: 12;
@@ -265,7 +265,7 @@ aside.app-sidebar {
     position: fixed;
     width: 260px;
     z-index: 1050;
-    background: linear-gradient(180deg, #0b1b45 0%, #0a2f7a 45%, #0a3aa0 100%) !important;
+    background: linear-gradient(180deg, #0c1f4e 0%, #0d3a8f 55%, #0f4bb8 100%) !important;
     box-shadow: 2px 0 24px rgba(2, 6, 23, 0.35);
 }
 
@@ -298,7 +298,7 @@ aside.app-sidebar {
 /* ============================================================================ */
 
 .app-navbar {
-    background: linear-gradient(90deg, #ffffff 0%, #e6f4ff 55%, #dff3ff 100%);
+    background: linear-gradient(90deg, #ffffff 0%, #eaf6ff 55%, #e3f7ff 100%);
     border-bottom: 1px solid rgba(203, 213, 225, 0.8);
     position: relative;
     z-index: 100;
@@ -667,10 +667,10 @@ h4, h5, h6 { font-size: clamp(1rem, 0.6vw + 0.85rem, 1.2rem); }
 }
 
 ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--brand-blue-light), var(--brand-purple));
+    background: linear-gradient(180deg, var(--brand-blue-light), var(--brand-cyan));
     border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--brand-blue), var(--brand-purple));
+    background: linear-gradient(180deg, var(--brand-blue), var(--brand-cyan));
 }
