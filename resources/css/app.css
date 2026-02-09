@@ -242,18 +242,26 @@ html, body {
 /* SIDEBAR */
 /* ============================================================================ */
 
-.app-sidebar {
+aside.app-sidebar {
     background: linear-gradient(180deg, #0b1533 0%, #0d2454 55%, #0b2a63 100%);
     box-shadow: 2px 0 20px rgba(15, 23, 42, 0.35);
     position: relative;
     z-index: 12;
-    width: 240px;
+    width: 260px;
     animation: slideInLeft 0.6s ease-out;
     overflow-y: auto;
 }
 
+.offcanvas.app-sidebar {
+    position: fixed;
+    width: 260px;
+    z-index: 1050;
+    background: linear-gradient(180deg, #0b1533 0%, #0d2454 55%, #0b2a63 100%) !important;
+    box-shadow: 2px 0 20px rgba(15, 23, 42, 0.35);
+}
+
 #appSidebar {
-    z-index: 1000;
+    z-index: 1050;
 }
 
 .app-sidebar .nav-link {
