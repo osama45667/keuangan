@@ -20,7 +20,6 @@ document.addEventListener('DOMContentLoaded', function() {
     const sidebarEl = document.getElementById('appSidebar');
     if (sidebarToggle && sidebarEl) {
         const hasBootstrap = !!(window.bootstrap && window.bootstrap.Offcanvas);
-        const bsInstance = hasBootstrap ? window.bootstrap.Offcanvas.getOrCreateInstance(sidebarEl) : null;
 
         const toggleSidebar = (force) => {
             const shouldOpen = typeof force === 'boolean' ? force : !sidebarEl.classList.contains('show');
@@ -30,41 +29,40 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         if (hasBootstrap) {
+            // Let Bootstrap handle toggle via data attributes to avoid double-toggle issues.
             sidebarEl.addEventListener('shown.bs.offcanvas', () => {
                 document.body.classList.add('sidebar-open');
             });
             sidebarEl.addEventListener('hidden.bs.offcanvas', () => {
                 document.body.classList.remove('sidebar-open');
             });
-        }
 
-        sidebarToggle.addEventListener('click', function (e) {
-            if (hasBootstrap && bsInstance) {
-                bsInstance.toggle();
-                return;
-            }
-            e.preventDefault();
-            toggleSidebar();
-        });
+            // Ensure the menu closes when a link is tapped.
+            sidebarEl.addEventListener('click', (e) => {
+                if (e.target && e.target.closest('a')) {
+                    const instance = window.bootstrap.Offcanvas.getInstance(sidebarEl);
+                    if (instance) instance.hide();
+                }
+            });
+        } else {
+            // Fallback for when Bootstrap JS isn't available.
+            sidebarToggle.addEventListener('click', function (e) {
+                e.preventDefault();
+                toggleSidebar();
+            });
 
-        // Close on link click
-        sidebarEl.addEventListener('click', (e) => {
-            if (e.target && e.target.closest('a')) {
-                if (hasBootstrap && bsInstance) {
-                    bsInstance.hide();
-                } else {
+            sidebarEl.addEventListener('click', (e) => {
+                if (e.target && e.target.closest('a')) {
                     toggleSidebar(false);
                 }
-            }
-        });
+            });
 
-        // Click outside to close (fallback only)
-        document.addEventListener('click', (e) => {
-            if (hasBootstrap) return;
-            if (!document.body.classList.contains('sidebar-open')) return;
-            if (sidebarEl.contains(e.target) || sidebarToggle.contains(e.target)) return;
-            toggleSidebar(false);
-        });
+            document.addEventListener('click', (e) => {
+                if (!document.body.classList.contains('sidebar-open')) return;
+                if (sidebarEl.contains(e.target) || sidebarToggle.contains(e.target)) return;
+                toggleSidebar(false);
+            });
+        }
     }
 
     // Safe element selection with null checks
